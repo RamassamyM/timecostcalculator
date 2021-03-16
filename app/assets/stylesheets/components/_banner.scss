@@ -1,0 +1,32 @@
+.banner {
+  background-size: cover;
+  background-position: center;
+  padding-top: 30vh;
+}
+
+.banner_type_fullpage {
+  // height: calc(100vh - 80px);
+  height: 100vh;
+  text-align: center;
+}
+
+.banner__title {
+  margin: 0;
+  color: white;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+  font-size: 32px;
+  font-weight: bold;
+}
+
+.banner__subtitle {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  font-size: 26px;
+  color: white;
+  opacity: .7;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+}
+
+.banner__button {
+  width: 200px;
+}

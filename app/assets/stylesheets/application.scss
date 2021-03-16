@@ -11,3 +11,32 @@
 // Your CSS partials
 @import "components/index";
 @import "pages/index";
+
+body {
+  margin: 0px;
+  color: #252525;
+  font-size: 14px;
+  font-family: Helvetica;
+}
+
+h1, h2, h3 {
+  color: #252525;
+  font-weight: lighter;
+}
+
+h1 {
+  font-size: 30px;
+}
+
+h2 {
+  font-size: 20px;
+}
+
+a {
+  text-decoration: none;
+  color: #01A1FD;
+}
+
+a:hover {
+  color: #e84089;
+}
