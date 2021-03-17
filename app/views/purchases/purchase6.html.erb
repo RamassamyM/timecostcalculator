@@ -10,34 +10,46 @@
     <i class="fas fa-chevron-left"></i> Back
   <% end %>
 </div>
-<div class="purchase-scheme-picture">
+<div class="purchase-scheme-picture mb-5">
   <%= image_tag 'truckload_freight.png' %>
 </div>
 <div class="container">
   <div class="row justify-content-center align-items-center">
-    <div class="col-12 col-md-8 ">
-      <div class="form form__search">
-        <%= form_tag searches_path, method: :get do %>
-          <%= hidden_field_tag :search_type, value: "truckload" %>
-          <%= text_field_tag :places_of_loading,
-            params[:places_of_loading],
-            class: "form-control",
-            placeholder: "Choose a place of loading"
-          %>
-          <%= select_tag :city, ["Berlin", "Chicago", "Madrid"] %>
-          <%= text_field_tag :places_of_delivery,
-            params[:places_of_delivery],
-            class: "form-control",
-            placeholder: "Choose a place of loading"
-          %>
-          <%= submit_tag "Search", class: "btn btn-primary" %>
-        <% end %>
-        <%= form_with url: "/search", method: :get do |form| %>
-          <%= form.label :query, "Search for:" %>
-          <%= form.text_field :query %>
-          <%= form.select :city, ["Berlin", "Chicago", "Madrid"], input_html: { class: 'select2' } %>
-          <%= form.submit "Search" %>
-        <% end %>
+    <div class="col-12 col-sm-10 col-md-6">
+        <form action="/search" method="get" accept-charset="UTF-8">
+          <input type="hidden" name="search_type" id="search_type" value="search_type" />
+          <div class="mb-3 mx-2">
+            <select name="place_of_loading" 
+                    data-allow-clear="true" 
+                    data-placeholder="Select a place of loading" 
+                    id="id_place_of_loading" 
+                    class="select2 js-states form-control"
+                    style="width: 100%">
+              <%= @places_of_loading.each do |place_of_loading| %>
+                <option value="<%= place_of_loading %>"><%= place_of_loading %></option>
+              <% end %>
+            </select>
+          </div>
+          <div class="mb-3 mx-2">
+            <select name="places_of_delivery" 
+                    data-placeholder="Select a place of delivery" 
+                    id="id_place_of_delivery" 
+                    class="select2 js-states form-control" 
+                    multiple="multiple"
+                    style="width: 100%">
+              <%= @places_of_delivery.each do |place_of_delivery| %>
+                <option value="<%= place_of_delivery %>"><%= place_of_delivery %></option>
+              <% end %>
+            </select>
+          </div>
+          <div class="d-flex justify-content-center">
+            <input name="commit" 
+                  type="submit" 
+                  value="Search" 
+                  data-disable-with="Search" 
+                  class="btn btn-primary btn_shape_rounded search__btn" />
+          </div>
+        </form>
       </div>
     </div>
   </div>
