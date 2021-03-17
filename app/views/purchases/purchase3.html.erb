@@ -1,0 +1,27 @@
+<div class="banner banner_type_small">
+  <div class="container">
+    <div class="banner__content">
+      <h1 class="banner__title banner__title_type_smallbanner">FOB purchase</h1>
+    </div>
+  </div>
+</div>
+<div class="breadcrumb">
+  <%= link_to calculations_path, class: '' do %>
+    <i class="fas fa-chevron-left"></i> Back
+  <% end %>
+</div>
+<div class="purchase-scheme-picture">
+  <%= image_tag 'FOB_purchase.png' %>
+</div>
+<h3>Suppliers</h3>
+<% @suppliers.each do |place| %>
+  <p>
+    <%= place %>
+  </p>
+<% end %>
+<h3>All Places of delivery</h3>
+<% @all_places_of_delivery.each do |place| %>
+  <p>
+    <%= place %>
+  </p>
+<% end %>

@@ -1,0 +1,33 @@
+<div class="banner banner_type_small">
+  <div class="container">
+    <div class="banner__content">
+      <h1 class="banner__title banner__title_type_smallbanner">Truckload freight purchase</h1>
+    </div>
+  </div>
+</div>
+<div class="breadcrumb">
+  <%= link_to calculations_path, class: '' do %>
+    <i class="fas fa-chevron-left"></i> Back
+  <% end %>
+</div>
+<div class="purchase-scheme-picture">
+  <%= image_tag 'truckload_freight.png' %>
+</div>
+<h3>Places of loading</h3>
+
+
+<%= simple_form_for (:query) do |f| %>
+  <div class="form-inputs">
+    <%= select_tag(@places_of_loading, @places_of_loading, class: "select2")  %>
+  </div>
+  <div class="form-actions">
+    <%= f.button :submit, "Search", class: "btn btn-primary" %>
+  </div>
+<% end %>
+
+<h3>Places of delivery</h3>
+<% @places_of_delivery.each do |place| %>
+  <p>
+    <%= place %>
+  </p>
+<% end %>

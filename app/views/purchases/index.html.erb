@@ -1,0 +1,89 @@
+<div class="banner banner_type_small">
+  <div class="container">
+    <div class="banner__content">
+      <h1 class="banner__title banner__title_type_smallbanner">Choose a type of purchase</h1>
+    </div>
+  </div>
+</div>
+<div class="breadcrumb">
+  <%= link_to home_path, class: '' do %>
+    <i class="fas fa-chevron-left"></i> Back
+  <% end %>
+</div>
+<div class="container py-5">
+  <div class="row">
+    <div class="col-12 col-md-6">
+      <%= link_to purchase1_path do %>
+        <div class="card-product">
+          <%= image_tag "FCA_purchase.png" %>
+          <%# <img src="https://raw.githubusercontent.com/lewagon/fullstack-images/master/uikit/skateboard.jpg" /> %>
+          <div class="card-product-infos">
+            <h2>FCA purchase</h2>
+            <p>Containerized freight</p>
+          </div>
+        </div>
+      <% end %>
+    </div>
+    <div class="col-12 col-md-6">
+      <%= link_to purchase2_path do %>
+        <div class="card-product">
+          <%= image_tag "CIF_CFR_purchase.png" %>
+          <%# <img src="https://raw.githubusercontent.com/lewagon/fullstack-images/master/uikit/skateboard.jpg" /> %>
+          <div class="card-product-infos">
+            <h2>CIF/CFR purchase</h2>
+            <p>Containerized freight</p>
+          </div>
+        </div>
+      <% end %>
+    </div>
+    <div class="col-12 col-md-6">
+      <%= link_to purchase3_path do %>
+        <div class="card-product">
+          <%= image_tag "FOB_purchase.png" %>
+          <%# <img src="https://raw.githubusercontent.com/lewagon/fullstack-images/master/uikit/skateboard.jpg" /> %>
+          <div class="card-product-infos">
+            <h2>FOB purchase</h2>
+            <p>Containerized freight</p>
+          </div>
+        </div>
+      <% end %>
+    </div>
+    <div class="col-12 col-md-6">
+      <%= link_to purchase4_path do %>
+        <div class="card-product">
+          <%= image_tag "export_shipments.png" %>
+          <%# <img src="https://raw.githubusercontent.com/lewagon/fullstack-images/master/uikit/skateboard.jpg" /> %>
+          <div class="card-product-infos">
+            <h2>Export shipments</h2>
+            <p>Containerized freight</p>
+          </div>
+        </div>
+      <% end %>
+    </div>
+    <div class="col-12 col-md-6">
+      <%= link_to purchase5_path do %>
+        <div class="card-product">
+          <%= image_tag "crosstrade_shipments.png" %>
+          <%# <img src="https://raw.githubusercontent.com/lewagon/fullstack-images/master/uikit/skateboard.jpg" /> %>
+          <div class="card-product-infos">
+            <h2>Cross trade shipments / FOB-CFR</h2>
+            <p>Containerized freight</p>
+          </div>
+        </div>
+      <% end %>
+    </div>
+    <div class="col-12 col-md-6">
+      <%= link_to purchase6_path do %>
+        <div class="card-product">
+          <%= image_tag "truckload_freight.png" %>
+          <%# <img src="https://raw.githubusercontent.com/lewagon/fullstack-images/master/uikit/skateboard.jpg" /> %>
+          <div class="card-product-infos">
+            <h2>Truckload freight</h2>
+            <p>Truckload freight</p>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+</div>
