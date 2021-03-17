@@ -3,14 +3,6 @@ config = YAML.load_file('/Users/michaelr/Documents/TRAVAIL/AUTOENTREPRENEUR/7 Cl
 CONTAINER_TYPE_DEFAULT = config['queries']['defaults']['container_type'].upcase.split.join
 
 class Query
-  attr_accessor :name
-  def initialize(name)
-    @name = name
-  end
-
-  def all_places_of_delivery
-    DrayageShipping.places_of_delivery.concat(TruckShipping.places_of_delivery).uniq.sort
-  end
 
   def fca_purchases(supplier:, place_of_loading:, place_of_delivery:, container_type: CONTAINER_TYPE_DEFAULT)
     # initialize results

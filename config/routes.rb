@@ -10,4 +10,5 @@ Rails.application.routes.draw do
   get 'purchase4', to: 'purchases#purchase4', as: :purchase4
   get 'purchase5', to: 'purchases#purchase5', as: :purchase5
   get 'purchase6', to: 'purchases#purchase6', as: :purchase6
+  get 'search', to: 'searches#index', as: :searches
 end

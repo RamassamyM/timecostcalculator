@@ -13,21 +13,32 @@
 <div class="purchase-scheme-picture">
   <%= image_tag 'truckload_freight.png' %>
 </div>
-<h3>Places of loading</h3>
-
-
-<%= simple_form_for (:query) do |f| %>
-  <div class="form-inputs">
-    <%= select_tag(@places_of_loading, @places_of_loading, class: "select2")  %>
+<div class="container">
+  <div class="row justify-content-center align-items-center">
+    <div class="col-12 col-md-8 ">
+      <div class="form form__search">
+        <%= form_tag searches_path, method: :get do %>
+          <%= hidden_field_tag :search_type, value: "truckload" %>
+          <%= text_field_tag :places_of_loading,
+            params[:places_of_loading],
+            class: "form-control",
+            placeholder: "Choose a place of loading"
+          %>
+          <%= select_tag :city, ["Berlin", "Chicago", "Madrid"] %>
+          <%= text_field_tag :places_of_delivery,
+            params[:places_of_delivery],
+            class: "form-control",
+            placeholder: "Choose a place of loading"
+          %>
+          <%= submit_tag "Search", class: "btn btn-primary" %>
+        <% end %>
+        <%= form_with url: "/search", method: :get do |form| %>
+          <%= form.label :query, "Search for:" %>
+          <%= form.text_field :query %>
+          <%= form.select :city, ["Berlin", "Chicago", "Madrid"], input_html: { class: 'select2' } %>
+          <%= form.submit "Search" %>
+        <% end %>
+      </div>
+    </div>
   </div>
-  <div class="form-actions">
-    <%= f.button :submit, "Search", class: "btn btn-primary" %>
-  </div>
-<% end %>
-
-<h3>Places of delivery</h3>
-<% @places_of_delivery.each do |place| %>
-  <p>
-    <%= place %>
-  </p>
-<% end %>
+</div>

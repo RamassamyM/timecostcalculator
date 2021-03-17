@@ -32,9 +32,9 @@ import { loadDynamicBannerText } from '../components/banner';
 import { initSelect2 } from '../components/select2';
 
 document.addEventListener('turbolinks:load', () => {
+  loadDynamicBannerText();
   // Call your functions here, e.g:
   // initSelect2();
   initUpdateNavbarOnScroll();
-  loadDynamicBannerText();
   initSelect2();
 });
