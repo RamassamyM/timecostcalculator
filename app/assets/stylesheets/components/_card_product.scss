@@ -11,6 +11,7 @@
 
 .card-product:hover {
   box-shadow: 0 0 5px rgba(0,0,0,0.4);
+  background-color: #f0fbff;
 }
 .card-product img {
   height: 100%;
@@ -33,9 +34,6 @@
   opacity: .7;
   margin-bottom: 0;
   margin-top: 8px;
-  &:hover {
-    text-decoration: none;
-  }
 }
 
 .card-product .card-product-infos {
