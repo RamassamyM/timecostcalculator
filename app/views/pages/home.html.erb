@@ -1,12 +1,20 @@
-<div class="banner banner_type_fullpage" style="background-image: linear-gradient(rgba(0,0,0,0.3),rgba(0,0,0,0.8)), url(https://ardo.com/files/attachments/.10903/w1800h544zccq85_header_producten.jpg);">
+<div class="banner banner_type_fullpage">
   <div class="container">
-    <div class="banner__content">
-      <%= image_tag "logo.png", alt: "Ardo", width: 200 %>
-      <h1 class="banner__title">Time & Cost Calculator</h1>
-      <p class="banner__subtitle">
-      <span id="banner-typed-text"></span>
-      </p>
-      <a class="btn btn-success btn-lg banner__button" href="#">Start</a>
+  <div class="row">
+    <div class="col-12 col-md-6">
+      <div class="banner__content">
+        <%= image_tag "logo.png", alt: "Ardo", width: 200 %>
+        <h1 class="banner__title">Time & Cost Calculator</h1>
+        <p class="banner__subtitle">
+        <span id="banner-typed-text"></span>
+        </p>
+        <%= link_to 'Start', calculations_path, class: "btn btn-primary btn-lg banner__button btn_shape_rounded" %>
+      </div>
     </div>
+    <div class="col-12 col-md-6">
+      <div class="banner__image" style="background-image: url(https://static.wixstatic.com/media/e4f166_584a099c077f41a687e46942851526f7~mv2.png/v1/fill/w_622,h_937,fp_0.50_0.50,q_90,usm_0.66_1.00_0.01/e4f166_584a099c077f41a687e46942851526f7~mv2.webp);">
+      </div>
+    </div>
+  </div>
   </div>
 </div>

@@ -1,20 +1,25 @@
 .navbar-lewagon {
   justify-content: space-between;
-  background-color: transparent;
+  // background-color: transparent;
+  background-color: white;
   transition: 0.5s background-color ease;
   height: 80px;
   color: white;
-  i {
-    color: white;
+  font-size: 16px;
+  font-family: "Nunito";
+  // border-bottom: 1px solid $light-gray;
+  box-shadow: 0 0 5px rgba(0,0,0,0.4)
+}
+
+.navbar__link-color-white {
+  a {
+    color: white!important;
   }
 }
 
 .navbar-lewagon-white {
   background-color: white;
   color: $gray;
-  i {
-    color: $gray;
-  }
 }
 
 .navbar-lewagon .navbar-collapse {
@@ -23,8 +28,4 @@
 
 .navbar-lewagon .navbar-brand img {
   height: 60px;
-}
-
-.navbar__icon_type_setting {
-  // color: white;
 }
