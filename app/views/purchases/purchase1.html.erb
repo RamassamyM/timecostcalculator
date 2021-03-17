@@ -13,15 +13,44 @@
 <div class="purchase-scheme-picture">
   <%= image_tag 'FCA_purchase.png' %>
 </div>
-<h3>Suppliers and places of loading</h3>
-<% @suppliers_and_places_of_loading.each do |place| %>
-  <p>
-    <%= place %>
-  </p>
-<% end %>
-<h3>All places of delivery</h3>
-<% @all_places_of_delivery.each do |place| %>
-  <p>
-    <%= place %>
-  </p>
-<% end %>
+<div class="container">
+  <div class="row justify-content-center align-items-center">
+    <div class="col-12 col-sm-10 col-md-6">
+        <form action="/search" method="get" accept-charset="UTF-8">
+          <input type="hidden" name="search_type" id="search_type" value="fca_purchase" />
+          <div class="mb-3 mx-2">
+            <select name="supplier_with_place_of_loading" 
+                    data-allow-clear="true" 
+                    data-placeholder="Select a supplier with a place of loading" 
+                    id="id_supplier_with_place_of_loading" 
+                    class="select2 js-states form-control"
+                    style="width: 100%">
+              <%= @suppliers_and_places_of_loading.each do |item| %>
+                <option value="<%= item %>"><%= item[0] %> - <%= item[1] %></option>
+              <% end %>
+            </select>
+          </div>
+          <div class="mb-3 mx-2">
+            <select name="places_of_delivery[]" 
+                    data-placeholder="Select a place of delivery" 
+                    id="id_places_of_delivery" 
+                    class="select2 js-states form-control" 
+                    multiple="multiple"
+                    style="width: 100%">
+              <%= @all_places_of_delivery.each do |place_of_delivery| %>
+                <option value="<%= place_of_delivery %>"><%= place_of_delivery %></option>
+              <% end %>
+            </select>
+          </div>
+          <div class="d-flex justify-content-center">
+            <input name="commit" 
+                  type="submit" 
+                  value="Search" 
+                  data-disable-with="Search" 
+                  class="btn btn-primary btn_shape_rounded search__btn" />
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
