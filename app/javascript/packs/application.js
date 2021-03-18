@@ -26,11 +26,12 @@ require("channels")
 import "bootstrap";
 
 // Internal imports, e.g:
-// import { initSelect2 } from '../components/init_select2';
 import { initUpdateNavbarOnScroll } from '../components/navbar';
 import { loadDynamicBannerText } from '../components/banner';
 import { initSelect2 } from '../components/select2';
 import { initTable } from '../components/table';
+// import '../components/tableExport'
+// import '../components/bootstrapTableExport'
 
 const images = require.context('../images', true)
 

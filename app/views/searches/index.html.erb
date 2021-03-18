@@ -24,40 +24,35 @@
       </div>
       <div class="search-table__wrapper mt-4">
         <table id="search_table"
-               data-toggle="table"
-               data-sort-class="table-active"
-               data-sortable="true"
                data-buttons-toolbar=".buttons-toolbar"
-               data-search="true"
-               data-show-search-clear-button="true"
+               data-toggle="table"
                data-show-toggle="true"
                data-show-columns="true"
                data-show-columns-toggle-all="true"
-               data-show-export="true"
-               data-checkbox-header="false"
-               data-minimum-count-columns="2"
-               data-show-pagination-switch="true"
-               data-pagination="true"
                data-id-field="id"
-               data-page-list="[10, 25, 50, 100, all]"
+               data-sortable="true"
+               data-sort-class="table-active"
                data-sort-name="cost"
                data-sort-order="asc"
-               data-click-to-select="true"
+               data-search="true"
+               data-show-search-clear-button="true"
+               data-show-export="true"
+               data-pagination="true"
+               data-show-pagination-switch="true"
+               data-page-list="[10, 25, 50, 100, all]"
                data-maintain-meta-data="true"
+               data-click-to-select="true"
                data-buttons-align="left"
-               class=""
                data-show-columns-search="true"
-               data-detail-view="true"
-               data-detail-formatter="detailFormatter"
                data-visible-search="true"
+               data-show-print="true"
                >
           <thead>
             <tr>
-              <th data-field="state" data-checkbox="true"></th>
-              <th data-field="id" data-sortable="true">N°</th>
+              <th data-field="state" data-checkbox="true">+</th>
+              <th data-field="id" data-sortable="true" data-visible="false">N°</th>
               <% @results.first.keys.each do |key| %>
                 <% header = key.to_s.split("_").map { |w| w.capitalize }.join(' ') %>
-                <% puts key %>
                 <th data-field="<%= key %>" 
                     class="table__column_data 
                            <%= 'table__column_data_important' if important_column(key)%>
