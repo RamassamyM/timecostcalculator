@@ -30,6 +30,9 @@ import "bootstrap";
 import { initUpdateNavbarOnScroll } from '../components/navbar';
 import { loadDynamicBannerText } from '../components/banner';
 import { initSelect2 } from '../components/select2';
+import { initTable } from '../components/table';
+
+const images = require.context('../images', true)
 
 document.addEventListener('turbolinks:load', () => {
   loadDynamicBannerText();
@@ -37,4 +40,5 @@ document.addEventListener('turbolinks:load', () => {
   // initSelect2();
   initUpdateNavbarOnScroll();
   initSelect2();
+  initTable();
 });

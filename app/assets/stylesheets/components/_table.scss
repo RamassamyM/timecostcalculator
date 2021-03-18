@@ -1,0 +1,30 @@
+.search-table__wrapper {
+  width: 100%;
+  min-height: 400px;
+  overflow-x: auto;
+  // white-space: nowrap;
+}
+
+.fixed-table-loading {
+  // display: none!important;
+  visibility: hidden!important;
+}
+
+.table__column_data {
+  color: $medium-dark-gray;
+}
+
+.table__column_data_important {
+  background-color: rgba(73, 87, 249, 0.1);
+  // background-color: #7b68ee82;
+  // color: white;
+}
+.table__column_data_primary {
+  background-color: rgba(73, 193, 249, 0.1);
+}
+
+.search-table__toolbar {
+  div {
+    float: none!important;
+  }
+}

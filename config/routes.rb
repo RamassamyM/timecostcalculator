@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   root to: 'pages#home', as: :home
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
   # get 'about', to: 'pages#about', as: :about
-  get 'calculations', to: 'purchases#index', as: :calculations
+  get 'purchases', to: 'purchases#index', as: :purchases
   get 'purchase1', to: 'purchases#purchase1', as: :purchase1
   get 'purchase2', to: 'purchases#purchase2', as: :purchase2
   get 'purchase3', to: 'purchases#purchase3', as: :purchase3

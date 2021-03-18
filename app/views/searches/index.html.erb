@@ -1,0 +1,86 @@
+<div class="banner banner_type_small">
+  <div class="container">
+    <div class="banner__content">
+      <h1 class="banner__title banner__title_type_smallbanner">Results</h1>
+    </div>
+  </div>
+</div>
+<div class="breadcrumb">
+  <%= link_to :back, class: '' do %>
+    <i class="fas fa-chevron-left"></i> Back
+  <% end %>
+</div>
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <div class="d-flex justify-content-between">
+        <div class="buttons-toolbar search-table__toolbar">
+        </div>
+        <div id="toolbar" class="ml-3">
+          <button id="remove" class="btn btn-danger" disabled>
+            <i class="fa fa-trash"></i> Delete
+          </button>
+        </div>
+      </div>
+      <div class="search-table__wrapper mt-4">
+        <table id="search_table"
+               data-toggle="table"
+               data-sort-class="table-active"
+               data-sortable="true"
+               data-buttons-toolbar=".buttons-toolbar"
+               data-search="true"
+               data-show-search-clear-button="true"
+               data-show-toggle="true"
+               data-show-columns="true"
+               data-show-columns-toggle-all="true"
+               data-show-export="true"
+               data-checkbox-header="false"
+               data-minimum-count-columns="2"
+               data-show-pagination-switch="true"
+               data-pagination="true"
+               data-id-field="id"
+               data-page-list="[10, 25, 50, 100, all]"
+               data-sort-name="cost"
+               data-sort-order="asc"
+               data-click-to-select="true"
+               data-maintain-meta-data="true"
+               data-buttons-align="left"
+               class=""
+               data-show-columns-search="true"
+               data-detail-view="true"
+               data-detail-formatter="detailFormatter"
+               data-visible-search="true"
+               >
+          <thead>
+            <tr>
+              <th data-field="state" data-checkbox="true"></th>
+              <th data-field="id" data-sortable="true">N°</th>
+              <% @results.first.keys.each do |key| %>
+                <% header = key.to_s.split("_").map { |w| w.capitalize }.join(' ') %>
+                <% puts key %>
+                <th data-field="<%= key %>" 
+                    class="table__column_data 
+                           <%= 'table__column_data_important' if important_column(key)%>
+                           <%= 'table__column_data_primary' if place_column(key)%>"
+                    data-sortable="true"
+                    ><%= header %>
+                </th>
+              <% end %>
+            </tr>
+          </thead>
+          <tbody>
+            <% @results.each_with_index do |result, index| %>
+              <tr>
+                <th></th>
+                <th><%= index + 1 %></th>
+                <% result.values.each do |value|%>
+                  <td><%= value %></td>
+                <% end %>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
