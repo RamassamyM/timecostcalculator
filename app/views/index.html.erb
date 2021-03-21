@@ -1,0 +1,22 @@
+<div class="banner banner_type_small">
+  <div class="container">
+    <div class="banner__content">
+      <h1 class="banner__title banner__title_type_smallbanner">Settings</h1>
+    </div>
+  </div>
+</div>
+<div class="container">
+  <div class="row">
+    <div class="col-12 pt-5">
+      <div class="mb-3">
+        <h3>Check the settings for the csv files:</h3>
+      </div>
+      <div class="mb-5">
+        <p>(You may need to update the config file located in this folder of the app : /config/config_csv_ardo.yml)</p>
+      </div>
+      <pre>
+      <%= @settings.to_s %>
+      </pre>
+    </div>
+  </div>
+</div> 

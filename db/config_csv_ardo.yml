@@ -1,0 +1,59 @@
+files_location:
+  directory_path: '/Users/michaelr/Documents/TRAVAIL/AUTOENTREPRENEUR/7 Clients/Meagan Butters - Ardo/data/'
+
+filenames:
+  port_shipping: 'Rates_Project_1_Arrival_at_Port.csv'
+  ocean_shipping: 'Rates_Project_2_Ocean_Freight.csv'
+  drayage_shipping: 'Rates Project - 3 - Drayage.csv'
+  truck_shipping: 'Rates Project - 4 - Point to Point.csv'
+
+csv_options:
+  col_sep: ','
+  quote_char: '"'
+  headers: :first_row
+
+query_defaults:
+  default_container_type: '40 ft reefer'
+
+currency_rates_to_usd:
+  EUR: 1.20
+
+expiry_email:
+  default: 'team@ardo.com'
+  ocean_shipping_parsing_header: 'email'
+
+
+headers_port_shipping:
+  supplier: 'Supplier'
+  place_of_loading: 'Place of Loading'
+  port_of_loading: 'Port of Loading'
+  forwarder: 'Forwarder'
+  transit_time: 'Transit Time'
+  cost: 'Cost'
+  currency: 'Currency'
+headers_ocean_shipping:
+  carrier: 'Carrier'
+  country_of_origin: 'Country of Origin'
+  country_of_destination: 'Country of Destination'
+  port_of_loading: 'Port of Loading'
+  port_of_destination: 'Port of Destination'
+  container_type: 'Container Type'
+  transit_time: 'Transit Time'
+  cost: 'Cost'
+  currency: 'Currency'
+  expiry: 'Expiry'
+headers_drayage_shipping:
+  port_of_destination: 'Port of Destination'
+  place_of_delivery: 'Place of Delivery'
+  max_gross_cargo: 'Max gross cargo (Lbs)'
+  transit_time: 'Transit Time'
+  cost: 'Cost'
+  currency: 'Currency'
+headers_truck_shipping:
+  place_of_loading: 'Place of Loading'
+  place_of_delivery: 'Place of Delivery'
+  trucker: 'Trucker'
+  max_gross_cargo: 'Max gross cargo (Lbs)'
+  transit_time: 'Transit Time'
+  cost: 'Cost'
+  currency: 'Currency'

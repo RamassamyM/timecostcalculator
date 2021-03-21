@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :settings
   devise_for :users
   root to: 'pages#home', as: :home
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
@@ -11,7 +12,7 @@ Rails.application.routes.draw do
   get 'purchase5', to: 'purchases#purchase5', as: :purchase5
   get 'purchase6', to: 'purchases#purchase6', as: :purchase6
   get 'search', to: 'searches#index', as: :searches
-  get 'settings', to: 'settings#index', as: :settings
-  get 'settings/edit', to: 'settings#edit', as: :edit_settings
-  patch 'settings', to: 'settings#update'
+  # get 'settings', to: 'settings#index', as: :settings
+  # get 'settings/edit', to: 'settings#edit', as: :edit_settings
+  # patch 'settings', to: 'settings#update'
 end
