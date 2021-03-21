@@ -43,3 +43,6 @@ document.addEventListener('turbolinks:load', () => {
   initSelect2();
   initTable();
 });
+
+require("trix")
+require("@rails/actiontext")

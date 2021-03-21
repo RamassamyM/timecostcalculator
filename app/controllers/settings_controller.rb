@@ -1,11 +1,7 @@
+require 'json'
 class SettingsController < ApplicationController
-
   def index
-  end
-
-  def edit
-  end
-
-  def update
+    raw_settings = policy_scope(Setting).new.read
+    @settings = JSON.pretty_generate(raw_settings)
   end
 end
