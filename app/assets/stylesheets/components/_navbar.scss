@@ -1,10 +1,10 @@
 .navbar-lewagon {
-  justify-content: space-between;
+  // justify-content: space-between;
   // background-color: transparent;
-  background-color: white;
-  transition: 0.5s background-color ease;
-  height: 80px;
-  color: white;
+  background-color: white!important;
+  // transition: 0.5s background-color ease;
+  // height: 80px;
+  color: $gray;
   font-size: 16px;
   font-family: "Nunito";
   // border-bottom: 1px solid $light-gray;
@@ -17,15 +17,14 @@
   }
 }
 
-.navbar-lewagon-white {
-  background-color: white;
-  color: $gray;
-}
-
 .navbar-lewagon .navbar-collapse {
-  flex-grow: 0;
+  // flex-grow: 0;
 }
 
-.navbar-lewagon .navbar-brand img {
+.navbar .navbar-brand img {
   height: 60px;
+}
+
+.navbar__login-link {
+    color: $gray!important;
 }

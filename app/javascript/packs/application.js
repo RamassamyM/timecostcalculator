@@ -28,8 +28,9 @@ import "bootstrap";
 // Internal imports, e.g:
 import { initUpdateNavbarOnScroll } from '../components/navbar';
 import { loadDynamicBannerText } from '../components/banner';
-import { initSelect2 } from '../components/select2';
+import { initSelect2 } from '../plugins/select2';
 import { initTable } from '../components/table';
+import { initSweetalert } from '../plugins/sweetAlert';
 // import '../components/tableExport'
 // import '../components/bootstrapTableExport'
 
@@ -41,8 +42,24 @@ document.addEventListener('turbolinks:load', () => {
   // initSelect2();
   initUpdateNavbarOnScroll();
   initSelect2();
-  initTable();
+  initTable('#search_table');
+  initTable('#settings_table');
+  initSweetalert('#sweet-alert-confirm', {
+    title: "Are you sure?",
+    text: "This action cannot be reversed",
+    icon: "warning",
+    buttons: {
+      cancel: true,
+      confirm: true,
+    },
+  }, (value) => {
+    if (value) {
+      const link = document.querySelector('#setting-form__submit-button');
+      link.click();
+    }
+  });
 });
 
 require("trix")
 require("@rails/actiontext")
+

@@ -1,31 +1,59 @@
-<p id="notice"><%= notice %></p>
+<div class="banner banner_type_small">
+  <div class="container">
+    <div class="banner__content">
+      <h1 class="banner__title banner__title_type_smallbanner">Settings</h1>
+    </div>
+  </div>
+</div>
+<div class="breadcrumb">
+  <%= link_to :back, class: '' do %>
+    <i class="fas fa-chevron-left"></i> Back
+  <% end %>
+</div>
+<div class="container">
+  <div class="row">
+    <div class="col-12 text-center">
+      <p>These important fields configurate how the app will find the csv files and parse the data inside.</p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <div class="search-table__wrapper mt-4">
+        <table id="settings_table"
+               data-toggle="table"
+               data-show-toggle="true"
+               data-id-field="id"
+               data-search="true"
+               data-show-search-clear-button="true"
+               data-visible-search="true"
+               >
+          <thead>
+            <tr>
+              <th>Category</th>
+              <th>Name</th>
+              <th>Value</th>
+              <th>Edit</th>
+            </tr>
+          </thead>
 
-<h1>Settings</h1>
+          <tbody>
+            <% policy_scope(@settings).each do |setting| %>
+              <tr>
+                <td class="table__column_data"><%= setting.category %></td>
+                <td class="table__column_data"><%= setting.name %></td>
+                <td class="table__column_data"><%= setting.value %></td>
+                <td>
+                  <%= link_to edit_setting_path(setting) do %>
+                    <i class="fas fa-pen"></i>
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+      <br>
 
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Name</th>
-      <th>Value</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @settings.each do |setting| %>
-      <tr>
-        <td><%= setting.type %></td>
-        <td><%= setting.name %></td>
-        <td><%= setting.value %></td>
-        <td><%= link_to 'Show', setting %></td>
-        <td><%= link_to 'Edit', edit_setting_path(setting) %></td>
-        <td><%= link_to 'Destroy', setting, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<br>
-
-<%= link_to 'New Setting', new_setting_path %>
+    </div>
+  </div>
+</div>

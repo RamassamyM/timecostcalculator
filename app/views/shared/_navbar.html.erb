@@ -1,7 +1,7 @@
-<div class="navbar navbar-expand-sm navbar-light navbar-lewagon 'navbar-lewagon-white' <%= is_home ? 'fixed-top' : '' %>">
+<div class="navbar navbar-expand-sm navbar-light bg-light navbar-lewagon justify-content-between">
   <%= link_to home_path, class: "navbar-brand" do %>
     <%= image_tag "logo.png" %>
-    <% end %>
+  <% end %>
 
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -9,28 +9,32 @@
 
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
+    <ul class="navbar-nav ml-auto">
       <% unless is_home %>
-        <li class="nav-item">
+        <li class="nav-item mr-5">
           <%= link_to "Home", home_path, class: "nav-link" %>
         </li>
-        <li class="nav-item">
+        <li class="nav-item mr-5">
           <%= link_to "Purchases", purchases_path, class: "nav-link" %>
         </li>
-      <% end %>
-      <% if user_signed_in? %>
-        <li class="nav-item dropdown">
-          <%= image_tag "profile2.png", class: "avatar dropdown-toggle", id: "navbarDropdown", data: { toggle: "dropdown" }, 'aria-haspopup': true, 'aria-expanded': false %>
-          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-            <%= link_to "Settings", settings_path, class: "dropdown-item" %>
-            <%= link_to "Log out", destroy_user_session_path, method: :delete, class: "dropdown-item" %>
-          </div>
-        </li>
-      <% else %>
-        <li class="nav-item">
-          <%= link_to 'Login', new_user_session_path, class: "nav-link" %>
-        </li>
+        <% if policy(Setting).index? %>
+          <li class="nav-item mr-5">
+            <%= link_to "Settings", settings_path, class: "nav-link" %>
+          </li>
+        <% end %>
       <% end %>
     </ul>
+    <% if user_signed_in? %>
+      <span class="nav-item dropdown">
+        <%= image_tag "profile2.png", class: "avatar dropdown-toggle", id: "navbarDropdown", data: { toggle: "dropdown" }, 'aria-haspopup': true, 'aria-expanded': false %>
+        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+          <%= link_to "Log out", destroy_user_session_path, method: :delete, class: "dropdown-item" %>
+        </div>
+      </span>
+    <% else %>
+      <span class="nav-item">
+        <%= link_to 'Login', new_user_session_path, class: "nav-link navbar__login-link" %>
+      </span>
+    <% end %>
   </div>
 </div>

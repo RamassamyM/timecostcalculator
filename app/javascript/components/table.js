@@ -3,8 +3,8 @@ import jQuery from 'jquery';
 import 'bootstrap-table';
 import './bootstrapTablePrint'
 
-const initTable = () => {
-  var $table = $('#search_table')
+const initTable = (table_id) => {
+  var $table = $(table_id)
   var $remove = $('#remove')
   var selections = []
 

@@ -1,6 +1,15 @@
-<h1>Editing Setting</h1>
+<div class="banner banner_type_small">
+  <div class="container">
+    <div class="banner__content">
+      <h1 class="banner__title banner__title_type_smallbanner">Edit Setting</h1>
+    </div>
+  </div>
+</div>
+<div class="breadcrumb">
+  <%= link_to :back, class: '' do %>
+    <i class="fas fa-chevron-left"></i> Back
+  <% end %>
+</div>
 
 <%= render 'form', setting: @setting %>
 
-<%= link_to 'Show', @setting %> |
-<%= link_to 'Back', settings_path %>
