@@ -8,11 +8,11 @@
         <p class="banner__subtitle">
         <span id="banner-typed-text"></span>
         </p>
-        <%= link_to 'Start', purchases_path, class: "btn btn-primary btn-lg banner__button btn_shape_rounded" %>
+        <%= link_to 'Start', purchases_path, class: "btn btn-primary btn-lg banner__button btn_shape_rounded mb-4" %>
       </div>
     </div>
-    <div class="col-12 col-md-6">
-      <div class="banner__image" style="background-image: url(https://static.wixstatic.com/media/e4f166_584a099c077f41a687e46942851526f7~mv2.png/v1/fill/w_622,h_937,fp_0.50_0.50,q_90,usm_0.66_1.00_0.01/e4f166_584a099c077f41a687e46942851526f7~mv2.webp);">
+    <div class="col-12 col-md-6 py-4">
+      <div class="banner__image" style="background-image: url('<%= asset_path('banner_image.png') %>')" >
       </div>
     </div>
   </div>

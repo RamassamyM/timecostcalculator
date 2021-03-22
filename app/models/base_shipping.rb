@@ -11,6 +11,36 @@ class BaseShipping
     @currency = attr[:currency]
   end
 
+  class CSVError < StandardError
+    def message(message)
+      "#{message} Please contact your administrator."
+    end
+  end
+
+  class NotFoundCSVError < CSVError
+    def message
+      super("Error occurred when trying to load the CSV. File not found.")
+    end
+  end
+
+  class NoPermissionCSVError < CSVError
+    def message
+      super("Error occurred when trying to load the CSV. Permission requirement problem.")
+    end
+  end
+
+  class ParsingCSVError < CSVError
+    def message
+      super("Error occurred when trying to parse the CSV.")
+    end
+  end
+
+  class ProgramCSVError < CSVError
+    def message
+      super("Sorry, we coul not process your request due to a technical problem.")
+    end
+  end
+
   def self.settings
     settings = {}
     Setting.all.each do |s|
@@ -24,19 +54,35 @@ class BaseShipping
   end
 
   def self.load(csv_type:)
-    settings = self.settings
-    filepath = settings[:files_location][:directory_path] + settings[:filenames][csv_type.to_sym]
-    settings[:csv_options][:headers] = settings[:csv_options][:headers].to_sym
-    results = []
-    # settings[:csv_options]
-    CSV.foreach(filepath, settings[:csv_options]) do |row|
-      data = {}
-      settings["headers_#{csv_type}".to_sym].each do |key, value|
-        data[key] = %w[transit_time cost].include?(key.to_s) ? row[value].to_i : row[value].upcase.split(' ').join('')
+    begin
+      settings = self.settings
+      filepath = settings[:files_location][:directory_path] + settings[:filenames][csv_type.to_sym]
+      settings[:csv_options][:headers] = settings[:csv_options][:headers].to_sym
+      results = []
+      # settings[:csv_options]
+      CSV.foreach(filepath, settings[:csv_options]) do |row|
+        data = {}
+        settings["headers_#{csv_type}".to_sym].each do |key, value|
+          begin
+            data[key] = %w[transit_time cost].include?(key.to_s) ? row[value].to_i : row[value].upcase.split(' ').join('')
+          rescue StandardError => e
+            puts e
+            raise ParsingCSVError
+          end
+        end
+        results << new(data).convert_to_usd(currency_rates_to_usd: settings[:currency_rates_to_usd])
       end
-      results << new(data).convert_to_usd(currency_rates_to_usd: settings[:currency_rates_to_usd])
+      results
+    rescue Errno::ENOENT => e
+      puts e
+      raise NotFoundCSVError
+    rescue Errno::EACCES => e
+      puts e
+      raise NoPermissionCSVError
+    rescue StandardError => e
+      puts e
+      raise ProgramCSVError
     end
-    results
   end
 
   def convert_to_usd(currency_rates_to_usd:)

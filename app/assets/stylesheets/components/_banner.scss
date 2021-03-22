@@ -7,7 +7,7 @@
   padding-top: 20vh;
   padding-left: 20px;
   padding-right: 20px;
-  height: 100vh;
+  height: calc(100vh - 86px);
   text-align: center;
 }
 
@@ -49,4 +49,5 @@
   height: 400px;
   background-size: cover;
   background-position: center;
+  // background-image: asset-path('/banner_image.png');
 }

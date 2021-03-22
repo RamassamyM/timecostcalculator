@@ -1,7 +1,7 @@
 
 <div class="container">
   <div class="row">
-    <div class="col-12">
+    <div class="col-12 col-sm-10 col-md-8 col-lg-6 mx-auto">
       <%= simple_form_for(@setting) do |f| %>
         <%= f.error_notification %>
         <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>

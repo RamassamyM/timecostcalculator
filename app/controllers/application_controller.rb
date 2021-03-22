@@ -8,29 +8,20 @@ class ApplicationController < ActionController::Base
 
   # Uncomment when you *really understand* Pundit!
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
-  rescue_from Errno::ENOENT, with: :file_not_found
-  rescue_from Errno::EACCES, with: :file_permission_not_allowed
+  rescue_from BaseShipping::CSVError, with: :handle_csv_error
 
   private
 
-  def file_not_found
-    flash[:alert] = "The CSV file was not found. Contact your administrator or check the file."
-    redirect_to(home_path)
+  def handle_csv_error(exception)
+    puts exception.message
+    flash[:alert] = exception.message
+    redirect_to(purchases_path)
   end
 
-  def file_permission_not_allowed
-    flash[:alert] = "We cannot acces to the csv file because of permissions problems. Contact your administrator."
-    redirect_to(home_path)
-  end
-
-  def parsing_error
-    flash[:alert] = "Sorry, we had a problem while trying to get the data from the CSV. Contact your administrator."
-    redirect_to(home_path)
-  end
-
-  def program_error
-    flash[:alert] = "Sorry, we have a technical problem. Please contact your administrator then the technical support."
-    redirect_to(home_path)
+  def handle_program_error(exception)
+    puts exception.message
+    flash[:alert] = "Sorry, we have a technical error. Please contact your administrator."
+    redirect_to(purchases_path)
   end
 
   def user_not_authorized

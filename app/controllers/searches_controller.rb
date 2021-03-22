@@ -12,7 +12,7 @@ class SearchesController < ApplicationController
       flash[:alert] = 'We cannot process your search'
       redirect_to :back
     end
-    # begin
+    begin
       @results = []
       @purchase_type = params[:search_type]
       case @purchase_type
@@ -61,10 +61,10 @@ class SearchesController < ApplicationController
         format.html
         format.json { render json: { results: @results } }
       end
-    # rescue => e
-    #   flash[:alert] = 'Missing parameters: ' + e.to_s
-    #   redirect_back fallback_location: purchases_path
-    # end
+    rescue StandardError => e
+      puts e
+      redirect_to purchases_path, :alert => "An error occurred when trying to process your query. Contact your administrator"
+    end
   end
 
   private
