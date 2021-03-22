@@ -2,8 +2,10 @@ require 'yaml'
 
 class SearchesController < ApplicationController
   skip_before_action :authenticate_user!, only: [:index]
-  config = YAML.load_file('/Users/michaelr/Documents/TRAVAIL/AUTOENTREPRENEUR/7 Clients/Meagan Butters - Ardo/code/services/CONFIG/config.yml')
-  CONTAINER_TYPE_DEFAULT = config['queries']['defaults']['container_type'].upcase.split.join
+
+  def container_type_default
+    Setting.where(category: 'query_defaults', name: 'default_container_type').first.value.upcase.split.join
+  end
 
   def index
     unless params[:search_type]
@@ -67,7 +69,7 @@ class SearchesController < ApplicationController
 
   private
 
-  def fca_purchases(supplier:, place_of_loading:, place_of_delivery:, container_type: CONTAINER_TYPE_DEFAULT)
+  def fca_purchases(supplier:, place_of_loading:, place_of_delivery:, container_type: container_type_default)
     # initialize results
     results = []
     # load data
@@ -121,7 +123,7 @@ class SearchesController < ApplicationController
                                                     all_truck_shippings: all_truck_shippings))
   end
 
-  def fob_purchases(supplier:, place_of_delivery:, container_type: CONTAINER_TYPE_DEFAULT)
+  def fob_purchases(supplier:, place_of_delivery:, container_type: container_type_default)
     # initialize results
     results = []
     # load data
@@ -157,7 +159,7 @@ class SearchesController < ApplicationController
     results
   end
 
-  def export_shipments(supplier:, place_of_loading:, port_of_destination:, container_type: CONTAINER_TYPE_DEFAULT)
+  def export_shipments(supplier:, place_of_loading:, port_of_destination:, container_type: container_type_default)
     # initialize results
     results = []
     # load data
@@ -183,7 +185,7 @@ class SearchesController < ApplicationController
     results
   end
 
-  def cross_trade_shipments(port_of_loading:, port_of_destination:, container_type: CONTAINER_TYPE_DEFAULT)
+  def cross_trade_shipments(port_of_loading:, port_of_destination:, container_type: container_type_default)
     all_ocean_shippings = OceanShipping.load
     # search ocean_shippings that match the given port_of_loading, port_of_destination and container_type
     ocean_shippings = ocean_shippings(port_of_loading: port_of_loading,
