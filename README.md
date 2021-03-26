@@ -16,6 +16,8 @@
 ### Installing the app
 - git clone
 - bundle install
+- for sidekiq : bundle binstub sidekiq
+
 - edit env file : with database password : 'TIMECOSTCALCULATOR_DATABASE_PASSWORD' (if necessary create user with password for PostgreSQL)
   - sudo -u postgres createuser -s appname
   - sudo -u postgres psql
@@ -118,3 +120,11 @@ netsh interface portproxy add v4tov4 listenport=3000 listenaddress=0.0.0.0 conne
 
 
 https://www.youtube.com/watch?v=yCK3easuYm4
+
+
+
+
+### Scheduled expiry emails
+install redis : 
+‘‘‘sudo apt-get install redis-server‘‘‘
+
