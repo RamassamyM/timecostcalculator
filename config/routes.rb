@@ -15,4 +15,9 @@ Rails.application.routes.draw do
   # get 'settings', to: 'settings#index', as: :settings
   # get 'settings/edit', to: 'settings#edit', as: :edit_settings
   # patch 'settings', to: 'settings#update'
+  # Sidekiq Web UI, only for admins.
+  require 'sidekiq/web'
+  authenticate :user, ->(user) { user.admin? } do
+    mount Sidekiq::Web => '/sidekiq'
+  end
 end

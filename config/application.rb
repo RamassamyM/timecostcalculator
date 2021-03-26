@@ -23,5 +23,6 @@ module Timecostcalculator
     # the framework and any gems in your application.
     
     # config.autoload_paths << "#{Rails.root}/lib"
+    config.active_job.queue_adapter = :sidekiq
   end
 end
