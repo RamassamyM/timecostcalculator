@@ -19,8 +19,8 @@ currency_rates_to_usd:
   EUR: 1.20
 
 expiry_email:
-  default: 'team@ardo.com'
-  ocean_shipping_parsing_header: 'email'
+  default: 'sunsmiley@live.fr'
+  ocean_freight_csv_column_for_email: 'email'
 
 
 headers_port_shipping:

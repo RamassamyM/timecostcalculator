@@ -6,6 +6,9 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 begin_time = Time.now
+print 'Clean DB...'
+Setting.delete_all
+puts 'done'
 puts 'Start seeding'
 print 'Loading config yaml file...'
 config = YAML.load_file('db/config_csv_ardo.yml')

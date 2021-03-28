@@ -123,8 +123,16 @@ https://www.youtube.com/watch?v=yCK3easuYm4
 
 
 
+Note en vrac : 
+The server can be run on a different port using the -p option. The default development environment can be changed using -e.
+
+$ bin/rails server -e production -p 4000
+The -b option binds Rails to the specified IP, by default it is localhost. You can run a server as a daemon by passing a -d option.
+
 
 ### Scheduled expiry emails
 install redis : 
 ‘‘‘sudo apt-get install redis-server‘‘‘
 
+Open a new terminal tab and run:
+‘sidekiq‘
