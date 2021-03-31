@@ -81,5 +81,5 @@ test:
 production:
   <<: *default
   database: timecostcalculator_production
-  username: timecostcalculator
+  username: <%= ENV['TIMECOSTCALCULATOR_DATABASE_USERNAME'] %>
   password: <%= ENV['TIMECOSTCALCULATOR_DATABASE_PASSWORD'] %>
