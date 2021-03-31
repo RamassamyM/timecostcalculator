@@ -15,39 +15,39 @@
 
 ### Scheduled expiry requirements
 You need redis as a database storage for jobs, if not installed, install on linux like that: 
-‘‘‘sudo apt-get install redis-server‘‘‘
+`sudo apt-get install redis-server`
 
 ## App installation
 ### Importing codebase from Github
-‘‘‘
+```bash
 git clone git@github.com:RamassamyM/timecostcalculator.git
-‘‘‘
+```
 ### Installing dependencies
-‘‘‘
+```bash
 bundle install
-‘‘‘
+```
 For sidekiq (that monitors email sending jobs with rails) installation :
-‘‘‘ 
+```bash
 bundle binstub sidekiq
-‘‘‘
+```
 
 ## Production installation
 ### Configuring database
 Create .env file in the root folder of the app : add key & values : 
   -database credentials : 
-  ‘‘‘
+  ```yaml
   TIMECOSTCALCULATOR_DATABASE_PASSWORD=xxx
   TIMECOSTCALCULATOR_DATABASE_USERNAME=xxx
-  ‘‘‘
+  ```
   Then create the user & password in PostGreSQL : 
-  ‘‘‘
+  ```bash
   sudo -u postgres createuser -s appname
   sudo -u postgres psql
   \password appname
-  ‘‘‘
+  ```
   - Exit the PostgreSQL console with this command: ‘\q‘
   - Check if config for database is good in config/database.yml :
-  ‘‘‘
+  ```yaml
     production:
     <<: *default
     host: localhost
@@ -57,57 +57,57 @@ Create .env file in the root folder of the app : add key & values :
     pool: 5
     username: <%= ENV['TIMECOSTCALCULATOR_DATABASE_USER'] %>
     password: <%= ENV['TIMECOSTCALCULATOR_DATABASE_PASSWORD'] %>
-  ‘‘‘
+  ```
   - Generate the secret key, which will be used to verify the integrity of signed cookies:
-  ‘rake secret‘
+  `rake secret`
   - Add the secret key to your .env file :
-  ‘SECRET_KEY_BASE=your_generated_secret‘
+  `SECRET_KEY_BASE=your_generated_secret`
 
 ### Creating production database & seeding database with initial data
 - Create Production Database
-‘‘‘
+```bash
 RAILS_ENV=production rake db:create
-‘‘‘
+```
 - Launch migrations to generate tables in database and fill up with data from seed :
-‘‘‘
+```bash
 RAILS_ENV=production rails db:migrate db:seed
-‘‘‘
-- Create a User admin : launch rails console 'rails c‘ for that and ‘User.create(email:'', password: '')‘
+```
+- Create a User admin : launch rails console `rails c` for that and `User.create(email:'', password: '')`
 
 ### Launching in production with Rails and Puma: 
 
 1. Check that you serve assets from Rails and not set for Nginx of Apache : make a change in config/environments/production.rb
-  ‘‘‘
+  ```ruby
     config.public_file_server.enabled = ENV['RAILS_SERVE_STATIC_FILES'].present?
     to
     config.public_file_server.enabled = true
-  ‘‘‘
+  ```
 
 2. Set webpack for production (see bin/webpack) : for that you need to add in your .env RAILS_ENV & NODE_ENV to "production"
 
 3. Compile assets for production : 
 (To make it a clean and straightforward compile job, you need to delete public/assets and public/packs folder)
-  ‘‘‘
+  ```yaml
     RAILS_ENV=production rake assets:precompile
     RAILS_ENV=production RACK_ENV=production NODE_ENV=production bin/webpack
-  ‘‘‘
+  ```
 
 4. Launch Rails server binding to the public IP address of the server: 
-  ‘‘‘
+  ```bash
     rails server -e production -p 3000 --binding=0.0.0.0
-  ‘‘‘
+  ```
   You can run a server as a daemon by passing a -d option.
-  To find the computer ip address : ‘curl ifconfig.me‘
+  To find the computer ip address : `curl ifconfig.me`
   You can also set the public IP address directly :
-  ‘RAILS_ENV=production rails server --binding=your_server_IP‘
-  (Note if you face any problem, you can try : ‘RACK_ENV=production bundle exec puma -p 3000‘)
+  `RAILS_ENV=production rails server --binding=your_server_IP`
+  (Note if you face any problem, you can try : `RACK_ENV=production bundle exec puma -p 3000`)
   Now visit this URL in a web browser:
   http://your_server_IP:3000/
 
 5. Launch Sidekiq in a new tab :
-  ‘‘‘
+  ```bash
     sidekiq
-  ‘‘‘
+  ```
 
 ### Installation helps
 - Check these websites for installation : 
@@ -121,23 +121,24 @@ https://www.youtube.com/watch?v=yCK3easuYm4
 Services are essential background processes that are usually run while booting up and shut down with the OS.
 
 ### Method 1: Managing services in Linux with systemd
-1. List all services
-‘systemctl list-unit-files --type service -all‘
-
-Combine it with the grep command and you can display just the 'yourname' services:
-
+- List all services
+```bash
+systemctl list-unit-files --type service -all
+```
+Combine it with the grep command and you can display just the `yourname` services:
+```bash
 sudo systemctl | grep yourname
-
+```
 
 ## To bind Rails with IP address in Windows and WSL2 Linux environment
 - WSL2 is a virtual environment with its own IP address on the computer.
 - To find this IP address : 
-‘‘‘
+```bash
 ip addr show eth0 | grep -oP '(?<=inet\s)\d+(\.\d+){3}'
-‘‘‘
+```
 
 - Then if you cannot access to it in the network : you have to bind the port of the WSL2 to the port of the computer : 
 (replace the IP address with the good one of the WSL2 Virtual Machine). This has to be entered in a Powershell (windows) terminal (not in the terminal of Ubuntu in the WSL2)
-‘‘‘
+```
 netsh interface portproxy add v4tov4 listenport=3000 listenaddress=0.0.0.0 connectport=3000 connectaddress=192.168.101.100
-‘‘‘
+```
