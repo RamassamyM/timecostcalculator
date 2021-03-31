@@ -15,7 +15,9 @@
 
 ### Scheduled expiry requirements
 You need redis as a database storage for jobs, if not installed, install on linux like that: 
-`sudo apt-get install redis-server`
+```bash
+sudo apt-get install redis-server
+```
 
 ## App installation
 ### Importing codebase from Github
@@ -59,10 +61,13 @@ Create .env file in the root folder of the app : add key & values :
     password: <%= ENV['TIMECOSTCALCULATOR_DATABASE_PASSWORD'] %>
   ```
   - Generate the secret key, which will be used to verify the integrity of signed cookies:
-  `rake secret`
+  ```bash
+  rake secret
+  ```
   - Add the secret key to your .env file :
-  `SECRET_KEY_BASE=your_generated_secret`
-
+  ```yaml
+  SECRET_KEY_BASE=your_generated_secret
+  ```
 ### Creating production database & seeding database with initial data
 - Create Production Database
 ```bash
@@ -72,7 +77,14 @@ RAILS_ENV=production rake db:create
 ```bash
 RAILS_ENV=production rails db:migrate db:seed
 ```
-- Create a User admin : launch rails console `rails c` for that and `User.create(email:'', password: '')`
+- Create a User admin : launch rails console 
+```bash
+rails c
+```
+and then type :
+```ruby
+User.create(email:'', password: '')
+```
 
 ### Launching in production with Rails and Puma: 
 
@@ -97,10 +109,18 @@ RAILS_ENV=production rails db:migrate db:seed
     rails server -e production -p 3000 --binding=0.0.0.0
   ```
   You can run a server as a daemon by passing a -d option.
-  To find the computer ip address : `curl ifconfig.me`
+  To find the computer ip address : 
+  ```bash
+  curl ifconfig.me
+  ```
   You can also set the public IP address directly :
-  `RAILS_ENV=production rails server --binding=your_server_IP`
-  (Note if you face any problem, you can try : `RACK_ENV=production bundle exec puma -p 3000`)
+  ```bash
+  RAILS_ENV=production rails server --binding=your_server_IP
+  ```
+  Note if you face any problem, you can try : 
+  ```bash
+  RACK_ENV=production bundle exec puma -p 3000
+  ```
   Now visit this URL in a web browser:
   http://your_server_IP:3000/
 
