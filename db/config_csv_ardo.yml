@@ -2,8 +2,8 @@ files_location:
   directory_path: ''
 
 filenames:
-  port_shipping: 'Rates_Project_1_Arrival_at_Port.csv'
-  ocean_shipping: 'Rates_Project_2_Ocean_Freight.csv'
+  port_shipping: 'Rates Project - 1 - Arrival_at_Port.csv'
+  ocean_shipping: 'Rates Project - 2 - Ocean_Freight.csv'
   drayage_shipping: 'Rates Project - 3 - Drayage.csv'
   truck_shipping: 'Rates Project - 4 - Point to Point.csv'
 

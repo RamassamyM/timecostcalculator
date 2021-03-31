@@ -24,7 +24,7 @@ namespace :parse do
           else
             email_to = settings[:expiry_email][:default]
           end
-          ExpiryMailer.alert(data: row.to_hash, email_to: email_to ).deliver_now
+          ExpiryMailer.alert(data: row.to_hash, email_to: email_to).deliver_later
         else
           puts "NOT expiry for === #{row['Expiry']}"
         end
