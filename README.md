@@ -43,12 +43,28 @@ Create .env file in the root folder of the app : add key & values :
   ```
   Then create the user & password in PostGreSQL : 
   ```bash
-  sudo -u postgres createuser -s appname
+  sudo -u postgres createuser -s xxx
   sudo -u postgres psql
-  \password appname
+  \password xxx
   ```
-  - Exit the PostgreSQL console with this command: ‘\q‘
-  - Check if config for database is good in config/database.yml :
+  or you can create in psql cli but you do not need to create database with the same name as in .env file)
+  ```bash
+  sudo -u postgres psql
+  postgres=# create database mydb;
+  postgres=# create user myuser with encrypted password 'mypass';
+  postgres=# grant all privileges on database mydb to myuser;
+  ```
+  To launch postgreSQL cli interface on Mac OS: 
+  ```bash
+  psql postgres
+  ```
+  then
+  ```postgres
+  postgres=# CREATE ROLE xxxx WITH LOGIN PASSWORD 'xxxxx'; 
+  postgres=# \du
+  ```
+  - Exit the PostgreSQL console with this command: `\q`
+  - Check if config for database is good in `config/database.yml` :
   ```yaml
     production:
     <<: *default
@@ -79,24 +95,29 @@ RAILS_ENV=production rails db:migrate db:seed
 ```
 - Create a User admin : launch rails console 
 ```bash
-rails c
+RAILS_ENV=production rails c
 ```
 and then type :
 ```ruby
-User.create(email:'', password: '')
+User.create(email:'', password: '', admin: true)
 ```
 
 ### Launching in production with Rails and Puma: 
 
-1. Check that you serve assets from Rails and not set for Nginx of Apache : make a change in config/environments/production.rb
+1. Check that you serve assets from Rails and not set for Nginx of Apache : 
+make a change in `config/environments/production.rb`
   ```ruby
     config.public_file_server.enabled = ENV['RAILS_SERVE_STATIC_FILES'].present?
     to
     config.public_file_server.enabled = true
   ```
 
-2. Set webpack for production (see bin/webpack) : for that you need to add in your .env RAILS_ENV & NODE_ENV to "production"
-
+2. Set webpack for production (see bin/webpack) : for that you need to add in your .env :
+```yaml
+RAILS_ENV=production
+RACK_ENV=production
+NODE_ENV=production
+```
 3. Compile assets for production : 
 (To make it a clean and straightforward compile job, you need to delete public/assets and public/packs folder)
   ```yaml
@@ -121,14 +142,18 @@ User.create(email:'', password: '')
   ```bash
   RACK_ENV=production bundle exec puma -p 3000
   ```
-  Now visit this URL in a web browser:
-  http://your_server_IP:3000/
 
 5. Launch Sidekiq in a new tab :
   ```bash
     sidekiq
   ```
 
+6. Now visit this URL in a web browser:
+  http://your_server_IP:3000/
+  Login as admin user & change settings for csv files
+
+  **Do not forget to write / at the end of the directory path**
+  
 ### Installation helps
 - Check these websites for installation : 
 https://www.digitalocean.com/community/tutorials/how-to-deploy-a-rails-app-with-puma-and-nginx-on-ubuntu-14-04
