@@ -16,7 +16,7 @@ namespace :parse do
     puts 'starting parsing CSV...'
     CSV.foreach(filepath, settings[:csv_options]) do |row|
       begin
-        if DateTime.strptime(row['Expiry'], '%d/%m/%y') == Date.today + 4.days
+        if DateTime.strptime(row['Expiry'], '%d/%m/%y') == Date.today + 10.days
           puts "ENQUEUE email for ===== #{row['Expiry']}"
           email_to = ''
           if settings[:expiry_email][:ocean_freight_csv_column_for_email] && row[settings[:expiry_email][:ocean_freight_csv_column_for_email]]
@@ -24,6 +24,7 @@ namespace :parse do
           else
             email_to = settings[:expiry_email][:default]
           end
+          puts "Email to: #{email_to}"
           ExpiryMailer.alert(data: row.to_hash, email_to: email_to).deliver_later
         else
           puts "NOT expiry for === #{row['Expiry']}"

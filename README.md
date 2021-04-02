@@ -101,6 +101,12 @@ and then type :
 ```ruby
 User.create(email:'', password: '', admin: true)
 ```
+### Configuring SMTP for production :
+In `timecostcalculator/config/initializers/smtp.rb` update gmail_username and gmail_password
+
+Note: at the beginning emails will arrive in SPAM in the mail boxes of the recipients.
+Make sure to send first emails with the email account to these recipients and make sure they accept in not spam and reply to you
+
 
 ### Launching in production with Rails and Puma: 
 
