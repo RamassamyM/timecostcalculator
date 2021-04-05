@@ -17,7 +17,8 @@ namespace :parse do
     CSV.foreach(filepath, settings[:csv_options]) do |row|
       begin
         if DateTime.strptime(row['Expiry'], '%d/%m/%y') == Date.today + 10.days
-          puts "ENQUEUE email for ===== #{row['Expiry']}"
+          puts "row: #{row}"
+          puts "Trying to ENQUEUE email for ===== #{row['Expiry']}"
           email_to = ''
           if settings[:expiry_email][:ocean_freight_csv_column_for_email] && row[settings[:expiry_email][:ocean_freight_csv_column_for_email]]
             email_to = row[settings[:expiry_email][:ocean_freight_csv_column_for_email]]

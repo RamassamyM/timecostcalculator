@@ -17,6 +17,7 @@
 You need redis as a database storage for jobs, if not installed, install on linux like that: 
 ```bash
 sudo apt-get install redis-server
+sudo service redis-server start
 ```
 
 ## App installation
@@ -32,7 +33,9 @@ For sidekiq (that monitors email sending jobs with rails) installation :
 ```bash
 bundle binstub sidekiq
 ```
-
+````
+yarn
+```
 ## Production installation
 ### Configuring database
 Create .env file in the root folder of the app : add key & values : 
