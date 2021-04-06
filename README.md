@@ -36,6 +36,12 @@ bundle binstub sidekiq
 ````
 yarn
 ```
+
+### Installing secrets
+create a master.key file in config folder with the master
+or EDITOR="nano --wait" bin/rails credentials:edit
+
+
 ## Production installation
 ### Configuring database
 Create .env file in the root folder of the app : add key & values : 
