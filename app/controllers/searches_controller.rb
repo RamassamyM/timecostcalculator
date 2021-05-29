@@ -297,8 +297,10 @@ class SearchesController < ApplicationController
     {
       supplier: port_shipping.supplier,
       place_of_loading: port_shipping.place_of_loading,
+      inland_loading_cost: port_shipping.cost,
       forwarder: port_shipping.forwarder,
       port_of_loading: port_shipping.port_of_loading,
+      ocean_freight_cost: ocean_shipping.cost,
       # port_of_loading_ocean: ocean_shipping.port_of_loading,
       carrier: ocean_shipping.carrier,
       country_of_origin: ocean_shipping.country_of_origin,
@@ -306,8 +308,10 @@ class SearchesController < ApplicationController
       container_type: ocean_shipping.container_type,
       expiry: ocean_shipping.expiry,
       port_of_destination: ocean_shipping.port_of_destination,
+      drayage_cost: after_ocean_shipping[:drayage_cost],
       max_gross_cargo_drayage: after_ocean_shipping[:max_gross_cargo_drayage],
       intermediate_place_of_loading: after_ocean_shipping[:intermediate_place_of_loading],
+      trucking_cost: after_ocean_shipping[:trucking_cost],
       trucker: after_ocean_shipping[:trucker],
       max_gross_cargo_truck: after_ocean_shipping[:max_gross_cargo_truck],
       place_of_delivery: after_ocean_shipping[:place_of_delivery]
@@ -319,8 +323,10 @@ class SearchesController < ApplicationController
       .merge({
                supplier: port_shipping.supplier,
                place_of_loading: port_shipping.place_of_loading,
+               inland_loading_cost: port_shipping.cost,
                forwarder: port_shipping.forwarder,
                port_of_loading: port_shipping.port_of_loading,
+               ocean_freight_cost: ocean_shipping.cost,
                carrier: ocean_shipping.carrier,
                country_of_origin: ocean_shipping.country_of_origin,
                country_of_destination: ocean_shipping.country_of_origin,
@@ -337,8 +343,10 @@ class SearchesController < ApplicationController
     calculated_time_and_cost(drayage_shipping, truck_shipping)
       .merge({
                port_of_destination: drayage_shipping.port_of_destination,
+               drayage_cost: drayage_shipping.cost,
                max_gross_cargo_drayage: drayage_shipping.max_gross_cargo,
                intermediate_place_of_loading: truck_shipping.place_of_loading,
+               trucking_cost: truck_shipping.cost,
                trucker: truck_shipping.trucker,
                max_gross_cargo_truck: truck_shipping.max_gross_cargo,
                place_of_delivery: truck_shipping.place_of_delivery || drayage_shipping.place_of_delivery
