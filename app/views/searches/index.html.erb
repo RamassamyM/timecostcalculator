@@ -25,6 +25,9 @@
             <button id="remove" class="btn btn-danger" disabled>
               <i class="fa fa-trash"></i> Remove from view
             </button>
+            <% if ['fca_purchase', 'fob_purchase', 'export_purchase', 'crosstrade_purchase'].include?(@purchase_type) %>
+            <button id="toggle-expired-results" class="btn btn-secondary">Show expired results</button>
+            <% end %>
           </div>
         </div>
         <div class="search-table__wrapper mt-4">

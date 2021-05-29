@@ -1,4 +1,5 @@
 require 'yaml'
+require 'date'
 
 class SearchesController < ApplicationController
   skip_before_action :authenticate_user!, only: [:index]
@@ -192,7 +193,11 @@ class SearchesController < ApplicationController
                                       port_of_destination: port_of_destination,
                                       all_ocean_shippings: all_ocean_shippings,
                                       container_type: container_type)
-    ocean_shippings.map { |shipping| convert_to_hash(shipping) }
+    ocean_shippings.map do |shipping|
+      hash = convert_to_hash(shipping)
+      hash["expired"] = (Date.strptime(hash["expiry"], '%d/%m/%y') + 1) < Date.today
+      hash
+    end
   end
 
   def truckload_freights(place_of_loading:, place_of_delivery:)
@@ -307,6 +312,7 @@ class SearchesController < ApplicationController
       country_of_destination: ocean_shipping.country_of_origin,
       container_type: ocean_shipping.container_type,
       expiry: ocean_shipping.expiry,
+      expired: (Date.strptime(ocean_shipping.expiry, '%d/%m/%y') + 1) < Date.today,
       port_of_destination: ocean_shipping.port_of_destination,
       drayage_cost: after_ocean_shipping[:drayage_cost],
       max_gross_cargo_drayage: after_ocean_shipping[:max_gross_cargo_drayage],
@@ -332,6 +338,7 @@ class SearchesController < ApplicationController
                country_of_destination: ocean_shipping.country_of_origin,
                container_type: ocean_shipping.container_type,
                expiry: ocean_shipping.expiry,
+               expired: (Date.strptime(ocean_shipping.expiry, '%d/%m/%y') + 1) < Date.today,
                port_of_destination: ocean_shipping.port_of_destination
             })
   end

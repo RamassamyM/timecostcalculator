@@ -6,8 +6,9 @@ import './bootstrapTablePrint'
 const initTable = (table_id) => {
   var $table = $(table_id)
   var $remove = $('#remove')
+  var $toggleExpiredResults = $('#toggle-expired-results')
   var selections = []
-
+  var showExpiredStatus = false
   function getIdSelections() {
     return $.map($table.bootstrapTable('getSelections'), function (row) {
       return row.id
@@ -39,6 +40,26 @@ const initTable = (table_id) => {
   //   }
   // }
 
+  function expiryFunctions() {
+    $table.bootstrapTable('filterBy', {
+      expired: "false"
+    })
+    $(function() {
+      $toggleExpiredResults.on( "click", function () {
+        if (showExpiredStatus) {
+          $table.bootstrapTable('filterBy', {
+            expired: "false"
+          })
+          this.innerHTML = "Show Expired Results"
+        } else {
+          $table.bootstrapTable('filterBy', {})
+          this.innerHTML = "Hide Expired Results"
+        }
+        showExpiredStatus = !showExpiredStatus
+      })
+    })
+  }
+
   function initTable() {
     $table.bootstrapTable('destroy').bootstrapTable()
     // $table.on('column-switch.bs.table', function(e, name, args) {
@@ -48,6 +69,9 @@ const initTable = (table_id) => {
     //   }
     //   $table.bootstrapTable(displayColumn, name)
     // })
+    if ($toggleExpiredResults.length) {
+      expiryFunctions()
+    }
     $table.on('check.bs.table uncheck.bs.table ' +
       'check-all.bs.table uncheck-all.bs.table',
     function () {
@@ -61,7 +85,7 @@ const initTable = (table_id) => {
     $table.on('all.bs.table', function (e, name, args) {
       console.log(name, args)
     })
-    $remove.click(function () {
+    $remove.on( "click", function () {
       var ids = getIdSelections()
       $table.bootstrapTable('remove', {
         field: 'id',
@@ -74,7 +98,7 @@ const initTable = (table_id) => {
   $(function() {
     initTable()
 
-    $('#locale').change(initTable)
+    $('#locale').on("change", initTable)
   })
 };
 
