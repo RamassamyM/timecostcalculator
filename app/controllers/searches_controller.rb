@@ -58,13 +58,21 @@ class SearchesController < ApplicationController
                                              place_of_delivery: place_of_delivery))
         end
       end
+      if @results&.first&.key?(:cost)
+        @top_result = @results.reject { |result| result[:expired] }
+                              .min_by { |result| result[:cost] }
+      else
+        @top_result = @results.reject { |result| result["expired"] }
+                              .min_by { |result| result["cost"] }
+      end
       respond_to do |format|
         format.html
-        format.json { render json: { results: @results } }
+        format.json { render json: { results: @results, top_result: @top_result } }
       end
+
     rescue StandardError => e
       puts e
-      redirect_to purchases_path, :alert => "An error occurred when trying to process your query. Contact your administrator"
+      redirect_to purchases_path, alert: "An error occurred when trying to process your query. Contact your administrator"
     end
   end
 

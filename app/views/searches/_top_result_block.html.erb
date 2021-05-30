@@ -1,0 +1,28 @@
+<div class="row">
+  <div class="col-12 col-md-5">
+    <div class="d-flex align-center justify-content-between">
+      <h2>Transit time:</h2>
+      <h2><%= top_result[:transit_time] || top_result["transit_time"]%></h2>
+    </div>
+    <div class="d-flex align-center justify-content-between">
+      <h2>Cost:</h2>
+      <h2><%= top_result[:cost] || top_result["cost"]%></h2>
+    </div>
+    <div class="d-flex align-center justify-content-between">
+      <h2>Currency:</h2>
+      <h2><%= top_result[:currency] || top_result["currency"]%></h2>
+    </div>
+  </div>
+  <div class="col-md-2 d-none d-sm-block"></div>
+  <div class="col-12 col-md-5">
+    <h2>Details</h2>
+    <% top_result.each do |key, value| %>
+      <% unless ["transit_time", "cost", "currency"].include?(key.to_s) %>
+        <div class="d-flex align-center justify-content-between details_list">
+          <p class="mb-0"><%= key.to_s.split("_").map { |w| w.capitalize }.join(' ')%> :</p>
+          <p class="mb-0"><%= value %></p>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+</div>
