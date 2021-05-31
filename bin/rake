@@ -1,6 +1,7 @@
 #!/home/ardovlm/.rbenv/shims/ruby
 
 # for development : change the path above with this one /usr/bin/env ruby
+# for production : change the path above with this one /home/ardovlm/.rbenv/shims/ruby
 begin
   load File.expand_path('../spring', __FILE__)
 rescue LoadError => e

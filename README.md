@@ -29,11 +29,13 @@ git clone git@github.com:RamassamyM/timecostcalculator.git
 ```bash
 bundle install
 ```
+`bundle install --without development test` in production
+
 For sidekiq (that monitors email sending jobs with rails) installation :
 ```bash
 bundle binstub sidekiq
 ```
-````
+```
 yarn
 ```
 
@@ -199,6 +201,6 @@ ip addr show eth0 | grep -oP '(?<=inet\s)\d+(\.\d+){3}'
 
 - Then if you cannot access to it in the network : you have to bind the port of the WSL2 to the port of the computer : 
 (replace the IP address with the good one of the WSL2 Virtual Machine). This has to be entered in a Powershell (windows) terminal (not in the terminal of Ubuntu in the WSL2)
-```
+```bash
 netsh interface portproxy add v4tov4 listenport=3000 listenaddress=0.0.0.0 connectport=3000 connectaddress=192.168.101.100
 ```
