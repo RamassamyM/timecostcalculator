@@ -5,3 +5,9 @@
     max-width: 100%;
   }
 }
+
+.dropdown-menu.show {
+  overflow: scroll!important;
+  height: 280px!important;
+  transform: translate3d(-224px, 38px, 0px)!important;
+}

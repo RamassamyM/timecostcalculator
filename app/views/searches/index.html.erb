@@ -24,7 +24,7 @@
           <div class="card-header" id="headingOne">
             <h2 class="mb-0">
               <button class="btn btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                Top Result
+                Cheapest Rate
               </button>
             </h2>
           </div>
@@ -53,15 +53,15 @@
           <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
             <div class="card-body">
                 <div class="d-flex justify-content-between">
-                  <div class="buttons-toolbar search-table__toolbar">
-                  </div>
-                  <div id="toolbar" class="ml-3">
-                    <button id="remove" class="btn btn-danger" disabled>
-                      <i class="fa fa-trash"></i> Remove from view
-                    </button>
+                  <div id="toolbar" class="mr-3">
                     <% if ['fca_purchase', 'fob_purchase', 'export_purchase', 'crosstrade_purchase'].include?(@purchase_type) %>
                     <button id="toggle-expired-results" class="btn btn-secondary">Show expired results</button>
                     <% end %>
+                    <button id="remove" class="btn btn-danger" disabled>
+                      <i class="fa fa-trash"></i> Remove from view
+                    </button>
+                  </div>
+                  <div class="buttons-toolbar search-table__toolbar">
                   </div>
                 </div>
                 <div class="search-table__wrapper mt-4">
@@ -84,7 +84,7 @@
                         data-page-list="[10, 25, 50, 100, all]"
                         data-maintain-meta-data="true"
                         data-click-to-select="true"
-                        data-buttons-align="left"
+                        data-buttons-align="right"
                         data-show-columns-search="true"
                         data-visible-search="true"
                         data-show-print="true"
