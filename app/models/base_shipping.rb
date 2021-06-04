@@ -86,9 +86,12 @@ class BaseShipping
   end
 
   def convert_to_usd(currency_rates_to_usd:)
-    return self unless currency_rates_to_usd.keys.include?(@currency)
-
-    @cost = (@cost.to_i * currency_rates_to_usd[@currency].to_f).round
+    return self unless currency_rates_to_usd.keys.include?(@currency.to_sym)
+    print "Currency is being converted to usd..."
+    puts @currency
+    puts @cost
+    @cost = (@cost.to_i * currency_rates_to_usd[@currency.to_sym].to_f).round
+    puts @cost
     @currency = 'USD'
     self
   end

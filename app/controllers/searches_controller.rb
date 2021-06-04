@@ -28,7 +28,7 @@ class SearchesController < ApplicationController
       when 'cif_purchase'
         places_of_delivery = params[:places_of_delivery]
         places_of_delivery.each do |place_of_delivery|
-          @results.concat(cif_cfr_purchases(port_of_destination: params[:place_of_delivery],
+          @results.concat(cif_cfr_purchases(port_of_destination: params[:port_of_destination],
                                             place_of_delivery: place_of_delivery))
         end
       when 'fob_purchase'
