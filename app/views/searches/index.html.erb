@@ -19,109 +19,91 @@
           <%= image_tag 'no_result_image.png' %>
         </div>
       <% else %>
-      <div class="accordion mb-4" id="accordionExample">
-        <div class="card">
-          <div class="card-header" id="headingOne">
-            <h2 class="mb-0">
-              <button class="btn btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                Cheapest Rate
-              </button>
-            </h2>
-          </div>
-          <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
-            <div class="card-body">
-              <div class="top-result-block">
-                <% if @top_result %>
-                  <%= render 'top_result_block', top_result: @top_result %> 
-                <% else %>
-                  <div class="d-flex justify-content-center">
-                    <%= image_tag 'only_expired_image.png' %>
-                  </div>
-                <% end %>
-              </div>
-            </div>
-          </div>
+        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+          <label class="btn btn-outline-secondary active">
+            <input type="radio" name="resultDisplayOption" id="topResultDisplay" checked> Cheapest Rate
+          </label>
+          <label class="btn btn-outline-secondary">
+            <input type="radio" name="resultDisplayOption" id="allResultsDisplay"> All Results
+          </label>
         </div>
-        <div class="card">
-          <div class="card-header" id="headingTwo">
-            <h2 class="mb-0">
-              <button class="btn btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                All results
+        <div class="top-result-block pt-5" id="cheapestRateBlock">
+          <% if @top_result %>
+            <%= render 'top_result_block', top_result: @top_result %> 
+          <% else %>
+            <div class="d-flex justify-content-center">
+              <%= image_tag 'only_expired_image.png' %>
+            </div>
+          <% end %>
+        </div>
+        <div id="allResultsBlock" class="pt-5 d-none">
+          <div class="d-flex justify-content-between">
+            <div id="toolbar" class="mr-3">
+              <% if ['fca_purchase', 'fob_purchase', 'export_purchase', 'crosstrade_purchase'].include?(@purchase_type) %>
+              <button id="toggle-expired-results" class="btn btn-secondary">Show expired results</button>
+              <% end %>
+              <button id="remove" class="btn btn-danger" disabled>
+                <i class="fa fa-trash"></i> Remove from view
               </button>
-            </h2>
-          </div>
-          <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
-            <div class="card-body">
-                <div class="d-flex justify-content-between">
-                  <div id="toolbar" class="mr-3">
-                    <% if ['fca_purchase', 'fob_purchase', 'export_purchase', 'crosstrade_purchase'].include?(@purchase_type) %>
-                    <button id="toggle-expired-results" class="btn btn-secondary">Show expired results</button>
-                    <% end %>
-                    <button id="remove" class="btn btn-danger" disabled>
-                      <i class="fa fa-trash"></i> Remove from view
-                    </button>
-                  </div>
-                  <div class="buttons-toolbar search-table__toolbar">
-                  </div>
-                </div>
-                <div class="search-table__wrapper mt-4">
-                  <table id="search_table"
-                        data-buttons-toolbar=".buttons-toolbar"
-                        data-toggle="table"
-                        data-show-toggle="true"
-                        data-show-columns="true"
-                        data-show-columns-toggle-all="true"
-                        data-id-field="id"
-                        data-sortable="true"
-                        data-sort-class="table-active"
-                        data-sort-name="cost"
-                        data-sort-order="asc"
-                        data-search="true"
-                        data-show-search-clear-button="true"
-                        data-show-export="true"
-                        data-pagination="true"
-                        data-show-pagination-switch="true"
-                        data-page-list="[10, 25, 50, 100, all]"
-                        data-maintain-meta-data="true"
-                        data-click-to-select="true"
-                        data-buttons-align="right"
-                        data-show-columns-search="true"
-                        data-visible-search="true"
-                        data-show-print="true"
-                        >
-                    <thead>
-                      <tr>
-                        <th data-field="state" data-checkbox="true">+</th>
-                        <th data-field="id" data-sortable="true" data-visible="false">N°</th>
-                        <% @results.first.keys.each do |key| %>
-                          <% header = key.to_s.split("_").map { |w| w.capitalize }.join(' ') %>
-                          <th data-field="<%= key %>" 
-                              class="table__column_data 
-                                    <%= 'table__column_data_important' if important_column(key)%>
-                                    <%= 'table__column_data_primary' if place_column(key)%>"
-                              data-sortable="true"
-                              ><%= header %>
-                          </th>
-                        <% end %>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <% @results.each_with_index do |result, index| %>
-                        <tr>
-                          <th></th>
-                          <th><%= index + 1 %></th>
-                          <% result.values.each do |value|%>
-                            <td><%= value %></td>
-                          <% end %>
-                        </tr>
-                      <% end %>
-                    </tbody>
-                  </table>
-                </div>  
-              </div>
+            </div>
+            <div class="buttons-toolbar search-table__toolbar">
             </div>
           </div>
-        </div>              
+          <div class="search-table__wrapper mt-4">
+            <table id="search_table"
+                  data-buttons-toolbar=".buttons-toolbar"
+                  data-toggle="table"
+                  data-show-toggle="true"
+                  data-show-columns="true"
+                  data-show-columns-toggle-all="true"
+                  data-id-field="id"
+                  data-sortable="true"
+                  data-sort-class="table-active"
+                  data-sort-name="cost"
+                  data-sort-order="asc"
+                  data-search="true"
+                  data-show-search-clear-button="true"
+                  data-show-export="true"
+                  data-pagination="true"
+                  data-show-pagination-switch="true"
+                  data-page-list="[10, 25, 50, 100, all]"
+                  data-maintain-meta-data="true"
+                  data-click-to-select="true"
+                  data-buttons-align="right"
+                  data-show-columns-search="true"
+                  data-visible-search="true"
+                  data-show-print="true"
+                  >
+              <thead>
+                <tr>
+                  <th data-field="state" data-checkbox="true">+</th>
+                  <th data-field="id" data-sortable="true" data-visible="false">N°</th>
+                  <% @results.first.keys.each do |key| %>
+                    <% header = key.to_s.split("_").map { |w| w.capitalize }.join(' ') %>
+                    <th data-field="<%= key %>" 
+                        class="table__column_data 
+                              <%= 'table__column_data_important' if important_column(key)%>
+                              <%= 'table__column_data_primary' if place_column(key)%>"
+                        data-sortable="true"
+                        ><%= header %>
+                    </th>
+                  <% end %>
+                </tr>
+              </thead>
+              <tbody>
+                <% @results.each_with_index do |result, index| %>
+                  <tr>
+                    <th></th>
+                    <th><%= index + 1 %></th>
+                    <% result.values.each do |value|%>
+                      <td><%= value %></td>
+                    <% end %>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>             
+        </div>
       <% end %>
     </div>
   </div>

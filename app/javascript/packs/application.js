@@ -30,6 +30,7 @@ import { initUpdateNavbarOnScroll } from '../components/navbar';
 import { loadDynamicBannerText } from '../components/banner';
 import { initSelect2 } from '../plugins/select2';
 import { initTable } from '../components/table';
+import { initRadioBtnForResultDisplay } from '../components/searchResult';
 import { initSweetalert } from '../plugins/sweetAlert';
 // import '../components/tableExport'
 // import '../components/bootstrapTableExport'
@@ -43,6 +44,7 @@ document.addEventListener('turbolinks:load', () => {
   initUpdateNavbarOnScroll();
   initSelect2();
   initTable('#search_table');
+  initRadioBtnForResultDisplay();
   initTable('#settings_table');
   initSweetalert('#sweet-alert-confirm', {
     title: "Are you sure?",
