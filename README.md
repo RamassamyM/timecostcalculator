@@ -204,3 +204,30 @@ ip addr show eth0 | grep -oP '(?<=inet\s)\d+(\.\d+){3}'
 ```bash
 netsh interface portproxy add v4tov4 listenport=3000 listenaddress=0.0.0.0 connectport=3000 connectaddress=192.168.101.100
 ```
+
+
+
+QUICK RECAP TO RELAUNCH THE APP AFTER RESTARTING THE COMPUTER :
+
+
+To relaunch the system :
+in the ubuntu terminal : find the ip address of ubuntu : 
+
+ip addr show eth0 | grep -oP '(?<=inet\s)\d+(\.\d+){3}'
+
+then launch rails server in ubuntu terminal:
+
+RAILS_ENV=production rails server --binding=0.0.0.0
+or ex : 
+rails server -e production -p 3000 --binding=0.0.0.0
+
+launch sidekiq in a new ubuntu terminal tab:
+
+sudo service redis-server start
+RAILS_ENV=production sidekiq
+
+make sure the binding is done between windows and ubuntu, launch this in windows powershell terminal:
+
+netsh interface portproxy add v4tov4 listenport=3000 listenaddress=0.0.0.0 connectport=3000 connectaddress=192.168.101.100
+
+change the connect address with the one we found earlier
