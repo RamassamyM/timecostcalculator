@@ -64,7 +64,7 @@ class BaseShipping
         data = {}
         settings["headers_#{csv_type}".to_sym].each do |key, value|
           begin
-            data[key] = %w[transit_time cost].include?(key.to_s) ? row[value].to_i : row[value].upcase.split(' ').join('')
+            data[key] = %w[transit_time cost].include?(key.to_s) ? row[value].to_i : row[value].upcase
           rescue StandardError => e
             puts e
             raise ParsingCSVError

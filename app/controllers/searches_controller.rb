@@ -5,7 +5,7 @@ class SearchesController < ApplicationController
   skip_before_action :authenticate_user!, only: [:index]
 
   def container_type_default
-    Setting.where(category: 'query_defaults', name: 'default_container_type').first.value.upcase.split.join
+    Setting.where(category: 'query_defaults', name: 'default_container_type').first.value.upcase
   end
 
   def index
