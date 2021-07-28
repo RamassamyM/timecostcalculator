@@ -207,27 +207,36 @@ netsh interface portproxy add v4tov4 listenport=3000 listenaddress=0.0.0.0 conne
 
 
 
-QUICK RECAP TO RELAUNCH THE APP AFTER RESTARTING THE COMPUTER :
+## QUICK RECAP TO RELAUNCH THE APP AFTER RESTARTING THE COMPUTER :
 
 
-To relaunch the system :
+### To relaunch the system :
 in the ubuntu terminal : find the ip address of ubuntu : 
-
+```bash
 ip addr show eth0 | grep -oP '(?<=inet\s)\d+(\.\d+){3}'
-
+```
 then launch rails server in ubuntu terminal:
-
+```bash
 RAILS_ENV=production rails server --binding=0.0.0.0
+```
 or ex : 
+```bash
 rails server -e production -p 3000 --binding=0.0.0.0
+```
 
 launch sidekiq in a new ubuntu terminal tab:
-
+```bash
 sudo service redis-server start
 RAILS_ENV=production sidekiq
-
+```
 make sure the binding is done between windows and ubuntu, launch this in windows powershell terminal:
-
+```powershell
 netsh interface portproxy add v4tov4 listenport=3000 listenaddress=0.0.0.0 connectport=3000 connectaddress=192.168.101.100
-
+```
 change the connect address with the one we found earlier
+
+### For setup on ubuntu on windows :
+in `timecostcalculator/bin/rake`
+the first line indicates the path to find ruby command.
+for development : usually change the path with this one /usr/bin/env ruby
+for production : change the path with this one /home/ardovlm/.rbenv/shims/ruby
