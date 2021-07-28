@@ -292,7 +292,7 @@ class SearchesController < ApplicationController
 
   def merged_port_ocean_and_after_ocean_shippings(port_shipping:, ocean_shipping:, after_ocean_shipping:)
     calculated_time_and_cost(port_shipping, ocean_shipping, after_ocean_shipping)
-      .merge(merged_port_ocean_after_ocean_shipping_except_time_and_cost(port_shipping: port_shipping,
+      .merge(merged_port_ocean_after_ocean_shipping_except_time_cost(port_shipping: port_shipping,
                                                                          ocean_shipping: ocean_shipping,
                                                                          after_ocean_shipping: after_ocean_shipping))
   end
@@ -301,12 +301,12 @@ class SearchesController < ApplicationController
                                                                                       ocean_shipping:,
                                                                                       after_ocean_shipping:)
     calculated_time_and_cost(ocean_shipping, after_ocean_shipping)
-      .merge(merged_port_ocean_after_ocean_shipping_except_time_and_cost(port_shipping: port_shipping,
+      .merge(merged_port_ocean_after_ocean_shipping_except_time_cost(port_shipping: port_shipping,
                                                                          ocean_shipping: ocean_shipping,
                                                                          after_ocean_shipping: after_ocean_shipping))
   end
 
-  def merged_port_ocean_after_ocean_shipping_except_time_and_cost(port_shipping:, ocean_shipping:, after_ocean_shipping:)
+  def merged_port_ocean_after_ocean_shipping_except_time_cost(port_shipping:, ocean_shipping:, after_ocean_shipping:)
     {
       supplier: port_shipping.supplier,
       place_of_loading: port_shipping.place_of_loading,
@@ -328,7 +328,8 @@ class SearchesController < ApplicationController
       trucking_cost: after_ocean_shipping[:trucking_cost],
       trucker: after_ocean_shipping[:trucker],
       max_gross_cargo_truck: after_ocean_shipping[:max_gross_cargo_truck],
-      place_of_delivery: after_ocean_shipping[:place_of_delivery]
+      place_of_delivery: after_ocean_shipping[:place_of_delivery],
+      notes: merged_notes(port_shipping, ocean_shipping, after_ocean_shipping)
     }
   end
 
@@ -347,13 +348,14 @@ class SearchesController < ApplicationController
                container_type: ocean_shipping.container_type,
                expiry: ocean_shipping.expiry,
                expired: (Date.strptime(ocean_shipping.expiry, '%d/%m/%y') + 1) < Date.today,
-               port_of_destination: ocean_shipping.port_of_destination
-            })
+               port_of_destination: ocean_shipping.port_of_destination,
+               notes: merged_notes(ocean_shipping, port_shipping)
+             })
   end
 
   def merged_drayage_and_truck_shippings(drayage_shipping:, truck_shipping: nil)
     # if truck_shipping is not provided, create an empty one to make the merge
-    truck_shipping ||= TruckShipping.new(transit_time: 0, currency: 'USD', cost: 0)
+    truck_shipping ||= TruckShipping.new(transit_time: 0, currency: 'USD', cost: 0, notes: '')
     # merge all data
     calculated_time_and_cost(drayage_shipping, truck_shipping)
       .merge({
@@ -364,7 +366,8 @@ class SearchesController < ApplicationController
                trucking_cost: truck_shipping.cost,
                trucker: truck_shipping.trucker,
                max_gross_cargo_truck: truck_shipping.max_gross_cargo,
-               place_of_delivery: truck_shipping.place_of_delivery || drayage_shipping.place_of_delivery
+               place_of_delivery: truck_shipping.place_of_delivery || drayage_shipping.place_of_delivery,
+               notes: merged_notes(drayage_shipping, truck_shipping)
             })
   end
 
@@ -375,11 +378,23 @@ class SearchesController < ApplicationController
   def merged_transit_time(shippings)
     # transit_timee are added
     result = shippings.reduce do |item1, item2|
-      transit_time1 = item1.class == Hash ? item1[:transit_time] : item1.transit_time
-      transit_time2 = item2.class == Hash ? item2[:transit_time] : item2.transit_time
+      transit_time1 = item1.instance_of?(Hash) ? item1[:transit_time] : item1.transit_time
+      transit_time2 = item2.instance_of?(Hash) ? item2[:transit_time] : item2.transit_time
       { transit_time: transit_time1 + transit_time2 }
     end
     result[:transit_time]
+  end
+
+  def merged_notes(*shippings)
+    # transit_timee are added
+    result = shippings.reduce do |item1, item2|
+      notes1 = item1.instance_of?(Hash) ? item1[:notes] : item1.notes
+      notes2 = item2.instance_of?(Hash) ? item2[:notes] : item2.notes
+      # return { notes: "#{notes1}#{notes2}" } if notes1.to_s.empty? || notes2.to_s.empty?
+
+      { notes: "#{notes1}<br/>#{notes2}" }
+    end
+    result[:notes]
   end
 
   def merged_costs_and_currencies(shippings)

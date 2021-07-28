@@ -17,12 +17,16 @@
   <div class="col-12 col-md-5">
     <h2>Details</h2>
     <% top_result.each do |key, value| %>
-      <% unless ["transit_time", "cost", "currency"].include?(key.to_s) %>
+      <% unless ["transit_time", "cost", "currency", "notes"].include?(key.to_s) %>
         <div class="d-flex align-center justify-content-between details_list">
           <p class="mb-0"><%= key.to_s.split("_").map { |w| w.capitalize }.join(' ')%> :</p>
           <p class="mb-0"><%= value %></p>
         </div>
       <% end %>
     <% end %>
+    <div class="details_list detail_notes" style="border: 1px solid black; padding: 2px;">
+          <p class="mb-0">Notes:</p>
+          <p class="ml-2"><%= sanitize top_result[:notes] %></p>
+    </div>
   </div>
 </div>

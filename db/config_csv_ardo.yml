@@ -27,6 +27,7 @@ headers_port_shipping:
   transit_time: 'Transit Time'
   cost: 'Cost'
   currency: 'Currency'
+  notes: 'Notes'
 headers_ocean_shipping:
   carrier: 'Carrier'
   country_of_origin: 'Country of Origin'
@@ -38,6 +39,7 @@ headers_ocean_shipping:
   cost: 'Cost'
   currency: 'Currency'
   expiry: 'Expiry'
+  notes: 'Notes'
 headers_drayage_shipping:
   port_of_destination: 'Port of Destination'
   place_of_delivery: 'Place of Delivery'
@@ -45,6 +47,7 @@ headers_drayage_shipping:
   transit_time: 'Transit Time'
   cost: 'Cost'
   currency: 'Currency'
+  notes: 'Notes'
 headers_truck_shipping:
   place_of_loading: 'Place of Loading'
   place_of_delivery: 'Place of Delivery'
@@ -53,6 +56,7 @@ headers_truck_shipping:
   transit_time: 'Transit Time'
   cost: 'Cost'
   currency: 'Currency'
+  notes: 'Notes'
 
 currency_rates_to_usd:
   EUR: 1.222499866

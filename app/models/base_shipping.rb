@@ -3,12 +3,13 @@
 
 # base class for all shipping loaders classes
 class BaseShipping
-  attr_accessor :transit_time, :cost, :currency
+  attr_accessor :transit_time, :cost, :currency, :notes
 
   def initialize(attr = {})
     @transit_time = attr[:transit_time]
     @cost = attr[:cost]
     @currency = attr[:currency]
+    @notes = attr[:notes]
   end
 
   class CSVError < StandardError
@@ -64,7 +65,17 @@ class BaseShipping
         data = {}
         settings["headers_#{csv_type}".to_sym].each do |key, value|
           begin
-            data[key] = %w[transit_time cost].include?(key.to_s) ? row[value].to_i : row[value].upcase
+            case key.to_s
+            when "transit_time"
+              data[key] = row[value].to_i
+            when "cost"
+              data[key] = row[value].to_i
+            when "notes"
+              data[key] = row[value] ? row[value] : ''
+            else
+              data[key] = row[value].upcase
+            end
+            # data[key] = %w[transit_time cost].include?(key.to_s) ? row[value].to_i : row[value].upcase
           rescue StandardError => e
             puts e
             raise ParsingCSVError

@@ -85,6 +85,7 @@
                               <%= 'table__column_data_important' if important_column(key)%>
                               <%= 'table__column_data_primary' if place_column(key)%>"
                         data-sortable="true"
+                        data-escape="<%= key == :notes ? 'false' : 'true' %>"
                         ><%= header %>
                     </th>
                   <% end %>
@@ -96,7 +97,7 @@
                     <th></th>
                     <th><%= index + 1 %></th>
                     <% result.values.each do |value|%>
-                      <td><%= value %></td>
+                      <td><%= sanitize value.to_s %></td>
                     <% end %>
                   </tr>
                 <% end %>
