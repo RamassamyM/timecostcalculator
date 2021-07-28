@@ -2,15 +2,15 @@
   <div class="col-12 col-md-5">
     <div class="d-flex align-center justify-content-between">
       <h2>Transit time:</h2>
-      <h2><%= top_result[:transit_time] || top_result["transit_time"]%></h2>
+      <h2 class="text-right"><%= top_result[:transit_time] || top_result["transit_time"]%></h2>
     </div>
     <div class="d-flex align-center justify-content-between">
       <h2>Cost:</h2>
-      <h2><%= top_result[:cost] || top_result["cost"]%></h2>
+      <h2 class="text-right"><%= top_result[:cost] || top_result["cost"]%></h2>
     </div>
     <div class="d-flex align-center justify-content-between">
       <h2>Currency:</h2>
-      <h2><%= top_result[:currency] || top_result["currency"]%></h2>
+      <h2 class="text-right"><%= top_result[:currency] || top_result["currency"]%></h2>
     </div>
   </div>
   <div class="col-md-2 d-none d-sm-block"></div>
@@ -21,16 +21,16 @@
       <% unless ["transit_time", "cost", "currency", "notes"].include?(key.to_s) %>
         <div class="d-flex align-center justify-content-between details_list">
           <p class="mb-0"><%= key.to_s.split("_").map { |w| w.capitalize }.join(' ')%> :</p>
-          <p class="mb-0"><%= value %></p>
+          <p class="mb-0 text-right"><%= value %></p>
         </div>
       <% end %>
     <% end %>
-      <div class="details_list detail_notes">
+      <div class="details_list detail_notes" style="border: 1px solid #cccccc; border-radius: 3px; padding: 2px;">
             <p class="mb-0">Notes:</p>
             <% unless top_result["notes"].nil? || top_result["notes"].delete('<br/>').empty? %>
               <p class="ml-2"><%= sanitize top_result["notes"] %></p>
             <% else %>
-              <p class="ml-2" style="text-align: right;">none</p>
+              <p class="ml-2  text-right">none</p>
             <% end %>
       </div>
   </div>

@@ -401,7 +401,7 @@ class SearchesController < ApplicationController
       notes2 = item2.instance_of?(Hash) ? item2[:notes] : item2.notes
       notes1 ||= ''
       notes2 ||= ''
-      { notes: notes1.empty? || notes2.empty? ? notes1 + notes2 : "#{notes1}<br/>#{notes2}" }
+      { notes: notes1.empty? || notes2.empty? ? notes1 + notes2 : "#{notes1}<br/><br/>#{notes2}" }
     end
     result[:notes]
   end
