@@ -137,7 +137,7 @@ NODE_ENV=production
 ```
 3. Compile assets for production : 
 (To make it a clean and straightforward compile job, you need to delete public/assets and public/packs folder)
-  ```yaml
+  ```bash
     RAILS_ENV=production rake assets:precompile
     RAILS_ENV=production RACK_ENV=production NODE_ENV=production bin/webpack
   ```
