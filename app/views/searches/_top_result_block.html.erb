@@ -16,6 +16,7 @@
   <div class="col-md-2 d-none d-sm-block"></div>
   <div class="col-12 col-md-5">
     <h2>Details</h2>
+    <hr/>
     <% top_result.each do |key, value| %>
       <% unless ["transit_time", "cost", "currency", "notes"].include?(key.to_s) %>
         <div class="d-flex align-center justify-content-between details_list">
@@ -24,9 +25,13 @@
         </div>
       <% end %>
     <% end %>
-    <div class="details_list detail_notes" style="border: 1px solid black; padding: 2px;">
-          <p class="mb-0">Notes:</p>
-          <p class="ml-2"><%= sanitize top_result[:notes] %></p>
-    </div>
+      <div class="details_list detail_notes">
+            <p class="mb-0">Notes:</p>
+            <% unless top_result["notes"].nil? || top_result["notes"].delete('<br/>').empty? %>
+              <p class="ml-2"><%= sanitize top_result["notes"] %></p>
+            <% else %>
+              <p class="ml-2" style="text-align: right;">none</p>
+            <% end %>
+      </div>
   </div>
 </div>

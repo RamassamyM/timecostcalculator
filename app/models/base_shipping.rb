@@ -70,10 +70,10 @@ class BaseShipping
               data[key] = row[value].to_i
             when "cost"
               data[key] = row[value].to_i
-            when "notes"
-              data[key] = row[value] ? row[value] : ''
+            # when "notes"
+            #   data[key] = row[value] ? row[value] : ''
             else
-              data[key] = row[value].upcase
+              data[key] = row[value] ? row[value].upcase : ''
             end
             # data[key] = %w[transit_time cost].include?(key.to_s) ? row[value].to_i : row[value].upcase
           rescue StandardError => e

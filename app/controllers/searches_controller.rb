@@ -61,6 +61,13 @@ class SearchesController < ApplicationController
       if @results&.first&.key?(:cost)
         @top_result = @results.reject { |result| result[:expired] }
                               .min_by { |result| result[:cost] }
+        top_result_with_string_keys = {}
+        if @top_result
+          @top_result.each_key do |key| 
+            top_result_with_string_keys[key.to_s] = @top_result[key] 
+          end
+          @top_result = top_result_with_string_keys
+        end
       else
         @top_result = @results.reject { |result| result["expired"] }
                               .min_by { |result| result["cost"] }
@@ -321,6 +328,7 @@ class SearchesController < ApplicationController
       container_type: ocean_shipping.container_type,
       expiry: ocean_shipping.expiry,
       expired: (Date.strptime(ocean_shipping.expiry, '%d/%m/%y') + 1) < Date.today,
+      free_days: ocean_shipping.free_days,
       port_of_destination: ocean_shipping.port_of_destination,
       drayage_cost: after_ocean_shipping[:drayage_cost],
       max_gross_cargo_drayage: after_ocean_shipping[:max_gross_cargo_drayage],
@@ -348,6 +356,7 @@ class SearchesController < ApplicationController
                container_type: ocean_shipping.container_type,
                expiry: ocean_shipping.expiry,
                expired: (Date.strptime(ocean_shipping.expiry, '%d/%m/%y') + 1) < Date.today,
+               free_days: ocean_shipping.free_days,
                port_of_destination: ocean_shipping.port_of_destination,
                notes: merged_notes(ocean_shipping, port_shipping)
              })
@@ -390,9 +399,9 @@ class SearchesController < ApplicationController
     result = shippings.reduce do |item1, item2|
       notes1 = item1.instance_of?(Hash) ? item1[:notes] : item1.notes
       notes2 = item2.instance_of?(Hash) ? item2[:notes] : item2.notes
-      # return { notes: "#{notes1}#{notes2}" } if notes1.to_s.empty? || notes2.to_s.empty?
-
-      { notes: "#{notes1}<br/>#{notes2}" }
+      notes1 ||= ''
+      notes2 ||= ''
+      { notes: notes1.empty? || notes2.empty? ? notes1 + notes2 : "#{notes1}<br/>#{notes2}" }
     end
     result[:notes]
   end

@@ -39,6 +39,7 @@ headers_ocean_shipping:
   cost: 'Cost'
   currency: 'Currency'
   expiry: 'Expiry'
+  free_days: 'Free days'
   notes: 'Notes'
 headers_drayage_shipping:
   port_of_destination: 'Port of Destination'
