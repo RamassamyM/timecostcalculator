@@ -40,6 +40,7 @@ headers_ocean_shipping:
   currency: 'Currency'
   expiry: 'Expiry'
   free_days: 'Free days'
+  frequency: 'Frequency'
   notes: 'Notes'
 headers_drayage_shipping:
   port_of_destination: 'Port of Destination'
