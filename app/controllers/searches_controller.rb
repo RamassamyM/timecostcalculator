@@ -13,7 +13,7 @@ class SearchesController < ApplicationController
       flash[:alert] = 'We cannot process your search'
       redirect_to :back
     end
-    begin
+    # begin
       @results = []
       @purchase_type = params[:search_type]
       case @purchase_type
@@ -60,15 +60,18 @@ class SearchesController < ApplicationController
       end
 
       if ['crosstrade_purchase', 'truckload_purchase'].include? @purchase_type
-        @results = @results.deep_symoblize_keys
+        @results = @results.map(&:deep_symbolize_keys)
       end
       @top_result = {}
 
       if ['fca_purchase', 'fob_purchase', 'export_purchase', 'crosstrade_purchase'].include? @purchase_type
+        # because in crosstrade, there is no merge, the total cost is the same as the ocean freight cost
+        #  to have the same format for the results, we need to add the good parameters names for calculations
+        @results = fillWithOceanFreightCostAndOceanFreightTransitTime(@results) if @purchase_type == 'crosstrade_purchase'
         @results = add_calculated_weigthed_average_values_for_ocean_freight_with_to_expired_results(@results)
         @results = add_total_cost_and_total_transit_time_with_average_ocean_values(@results)
         @top_result = @results.reject { |result| result[:expired] }
-                              .min_by { |result| result[:total_cost_with_weighted_average_ocean_cost] }
+                              .min_by { |result| [result[:total_cost_with_weighted_average_ocean_cost], result[:cost]] }
       else
         @top_result = @results.reject { |result| result[:expired] }
                               .min_by { |result| result[:cost] }
@@ -77,20 +80,28 @@ class SearchesController < ApplicationController
         format.html
         format.json { render json: { results: @results, top_result: @top_result } }
       end
-    rescue StandardError => e
-      puts e
-      error_message = "An error occurred when trying to process your query. Contact your administrator"
-      error_message = "You may have an invalid date in your data. One example is non existing dates like 31st of June." if e.message == "invalid date" 
-      redirect_to purchases_path, alert: error_message
-    end
+    # rescue StandardError => e
+    #   puts e
+    #   error_message = "An error occurred when trying to process your query. Contact your administrator"
+    #   error_message = "You may have an invalid date in your data. One example is non existing dates like 31st of June." if e.message == "invalid date" 
+    #   redirect_to purchases_path, alert: error_message
+    # end
   end
 
   private
 
+  def fillWithOceanFreightCostAndOceanFreightTransitTime(results)
+    results.map do |r|
+      r[:ocean_freight_cost] = r[:cost]
+      r[:ocean_freight_transit_time] = r[:transit_time]
+      r
+    end
+  end
+
   def add_total_cost_and_total_transit_time_with_average_ocean_values(results)
     return results.map do |result|
       result[:total_cost_with_weighted_average_ocean_cost] = result[:weighted_average_ocean_cost] ? result[:cost] + result[:weighted_average_ocean_cost] - result[:ocean_freight_cost] : result[:cost]
-      result[:total_transit_time_with_weighted_average_ocean_cost] = result[:weighted_average_ocean_transit_time] ? result[:transit_time] + result[:weighted_average_ocean_transit_time] - result[:ocean_freight_transit_time] : result[:transit_time]
+      result[:total_transit_time_with_weighted_average_ocean_transit_time] = result[:weighted_average_ocean_transit_time] ? result[:transit_time] + result[:weighted_average_ocean_transit_time] - result[:ocean_freight_transit_time] : result[:transit_time]
       result
     end
   end
@@ -282,7 +293,7 @@ class SearchesController < ApplicationController
 
   def convert_object_to_hash(my_object)
     hash = {}
-    my_object.instance_variables.each { |var| hash[var.to_s.delete("@")] = object.instance_variable_get(var) }
+    my_object.instance_variables.each { |var| hash[var.to_s.delete("@")] = my_object.instance_variable_get(var) }
     hash
   end
 
