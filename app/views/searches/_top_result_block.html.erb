@@ -1,16 +1,21 @@
 <div class="row">
   <div class="col-12 col-md-5">
     <div class="d-flex align-center justify-content-between">
-      <h2>Transit time:</h2>
-      <h2 class="text-right"><%= top_result[:transit_time] || top_result["transit_time"]%></h2>
-    </div>
-    <div class="d-flex align-center justify-content-between">
-      <h2>Cost:</h2>
-      <h2 class="text-right"><%= top_result[:cost] || top_result["cost"]%></h2>
+      <% if @top_result[:total_cost_with_weighted_average_ocean_cost] %>
+        <h2>Average cost:</h2>
+        <h1 class="text-right"><%= top_result[:total_cost_with_weighted_average_ocean_cost] || top_result["cost"]%></h1>
+      <% else %>
+        <h2>Cost:</h2>
+        <h1 class="text-right"><%= top_result[:cost] || top_result["cost"]%></h1>
+      <% end %>
     </div>
     <div class="d-flex align-center justify-content-between">
       <h2>Currency:</h2>
       <h2 class="text-right"><%= top_result[:currency] || top_result["currency"]%></h2>
+    </div>
+    <div class="d-flex align-center justify-content-between">
+      <h2>Transit time:</h2>
+      <h2 class="text-right"><%= top_result[:transit_time] || top_result["transit_time"]%></h2>
     </div>
   </div>
   <div class="col-md-2 d-none d-sm-block"></div>
