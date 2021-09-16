@@ -70,6 +70,8 @@ class BaseShipping
               data[key] = row[value].to_i
             when "cost"
               data[key] = row[value].to_i
+            when "frequency"
+              data[key] = row[value].to_f
             # when "notes"
             #   data[key] = row[value] ? row[value] : ''
             else
