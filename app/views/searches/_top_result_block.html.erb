@@ -22,14 +22,24 @@
   <div class="col-12 col-md-5">
     <h2>Details</h2>
     <hr/>
-    <% top_result.each do |key, value| %>
-      <% unless ["transit_time", "cost", "currency", "notes"].include?(key.to_s) %>
-        <div class="d-flex align-center justify-content-between details_list">
-          <p class="mb-0"><%= key.to_s.split("_").map { |w| w.capitalize }.join(' ')%> :</p>
-          <p class="mb-0 text-right"><%= value %></p>
-        </div>
+    <% if @top_result[:total_cost_with_weighted_average_ocean_cost] %>
+      <% top_result.each do |key, value| %>
+        <% if ["supplier", "place_of_loading", "port_of_loading", "port_of_destination", "intermediate_place_of_loading", "place_of_delivery"].include?(key.to_s) %>
+          <div class="d-flex align-center justify-content-between details_list">
+            <p class="mb-0"><%= key.to_s.split("_").map { |w| w.capitalize }.join(' ')%> :</p>
+            <p class="mb-0 text-right"><%= value %></p>
+          </div>
+        <% end %>
       <% end %>
-    <% end %>
+    <% else %>
+      <% top_result.each do |key, value| %>
+        <% unless ["transit_time", "cost", "currency", "notes"].include?(key.to_s) %>
+          <div class="d-flex align-center justify-content-between details_list">
+            <p class="mb-0"><%= key.to_s.split("_").map { |w| w.capitalize }.join(' ')%> :</p>
+            <p class="mb-0 text-right"><%= value %></p>
+          </div>
+        <% end %>
+      <% end %>
       <div class="details_list detail_notes" style="border: 1px solid #cccccc; border-radius: 3px; padding: 2px;">
             <p class="mb-0">Notes:</p>
             <% unless top_result["notes"].nil? || top_result["notes"].delete('<br/>').empty? %>
@@ -38,5 +48,6 @@
               <p class="ml-2  text-right">none</p>
             <% end %>
       </div>
+    <% end %>
   </div>
 </div>
