@@ -10,7 +10,8 @@ class OceanShipping < BaseShipping
                 :port_of_destination,
                 :container_type,
                 :expiry,
-                :free_days
+                :free_days,
+                :frequency
 
   def initialize(attr = {})
     super(attr)
@@ -22,6 +23,7 @@ class OceanShipping < BaseShipping
     @container_type = attr[:container_type]
     @expiry = attr[:expiry]
     @free_days = attr[:free_days]
+    @frequency = attr[:frequency]
   end
 
   def self.load
