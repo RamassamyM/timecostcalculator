@@ -85,6 +85,7 @@
                               <%= 'table__column_data_important' if important_column(key)%>
                               <%= 'table__column_data_primary' if place_column(key)%>"
                         data-sortable="true"
+                        data-visible="<%= displayColumn(key)%>"
                         data-escape="<%= key == :notes ? 'false' : 'true' %>"
                         ><%= header %>
                     </th>

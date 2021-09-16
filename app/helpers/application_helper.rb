@@ -27,4 +27,17 @@ module ApplicationHelper
       'intermediate_place_of_loading'
     ].include?(key)
   end
+
+  def displayColumn(key)
+    ![
+      :weighted_average_ocean_cost,
+      'weighted_average_ocean_cost',
+      :weighted_average_ocean_transit_time, 
+      'weighted_average_ocean_transit_time', 
+      :total_cost_with_weighted_average_ocean_cost, 
+      'total_cost_with_weighted_average_ocean_cost', 
+      :total_transit_time_with_weighted_average_ocean_transit_time,
+      'total_transit_time_with_weighted_average_ocean_transit_time'
+    ].include?(key)
+  end
 end
