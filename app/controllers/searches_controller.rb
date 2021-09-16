@@ -58,32 +58,89 @@ class SearchesController < ApplicationController
                                              place_of_delivery: place_of_delivery))
         end
       end
-      if @results&.first&.key?(:cost)
+
+      if ['crosstrade_purchase', 'truckload_purchase'].include? @purchase_type
+        @results = @results.deep_symoblize_keys
+      end
+      @top_result = {}
+
+      if ['fca_purchase', 'fob_purchase', 'export_purchase', 'crosstrade_purchase'].include? @purchase_type
+        @results = add_calculated_weigthed_average_values_for_ocean_freight_with_to_expired_results(@results)
+        @results = add_total_cost_and_total_transit_time_with_average_ocean_values(@results)
+        @top_result = @results.reject { |result| result[:expired] }
+                              .min_by { |result| result[:total_cost_with_weighted_average_ocean_cost] }
+      else
         @top_result = @results.reject { |result| result[:expired] }
                               .min_by { |result| result[:cost] }
-        top_result_with_string_keys = {}
-        if @top_result
-          @top_result.each_key do |key| 
-            top_result_with_string_keys[key.to_s] = @top_result[key] 
-          end
-          @top_result = top_result_with_string_keys
-        end
-      else
-        @top_result = @results.reject { |result| result["expired"] }
-                              .min_by { |result| result["cost"] }
       end
       respond_to do |format|
         format.html
         format.json { render json: { results: @results, top_result: @top_result } }
       end
-
     rescue StandardError => e
       puts e
-      redirect_to purchases_path, alert: "An error occurred when trying to process your query. Contact your administrator"
+      error_message = "An error occurred when trying to process your query. Contact your administrator"
+      error_message = "You may have an invalid date in your data. One example is non existing dates like 31st of June." if e.message == "invalid date" 
+      redirect_to purchases_path, alert: error_message
     end
   end
 
   private
+
+  def add_total_cost_and_total_transit_time_with_average_ocean_values(results)
+    return results.map do |result|
+      result[:total_cost_with_weighted_average_ocean_cost] = result[:weighted_average_ocean_cost] ? result[:cost] + result[:weighted_average_ocean_cost] - result[:ocean_freight_cost] : result[:cost]
+      result[:total_transit_time_with_weighted_average_ocean_cost] = result[:weighted_average_ocean_transit_time] ? result[:transit_time] + result[:weighted_average_ocean_transit_time] - result[:ocean_freight_transit_time] : result[:transit_time]
+      result
+    end
+  end
+
+  def add_calculated_weigthed_average_values_for_ocean_freight_with_to_expired_results(results)
+    # Keep only not expired results
+    unexpired_results = results.reject { |result| result[:expired] }
+    # find distinct pairs of port_of_loading/port_of_destination among non expired results
+    distinct_ports_pairs = unexpired_results.map { |r| {port_of_loading: r[:port_of_loading], port_of_destination: r[:port_of_destination]} }.uniq
+    # iterate on each pair to calculate ocean freight weighted average cost and transit time
+    distinct_ports_pairs = distinct_ports_pairs.map do |pair|
+      # for this ports pair, select only results having this pair of ports
+      same_ports_results = unexpired_results.select { |r| r[:port_of_loading] == pair[:port_of_loading] && r[:port_of_destination] == pair[:port_of_destination] }
+      # calculate the weighted average values and add them to the uniq ports array
+      pair[:weighted_average_ocean_cost] = calculate_weighted_average_ocean_freight_cost(same_ports_results)
+      pair[:weighted_average_ocean_transit_time] = calculate_weighted_average_ocean_freight_transit_time(same_ports_results)
+      pair
+    end
+    # integrate the values to the right results and return the array of updated results
+    results.map do |r|
+      port_pair = distinct_ports_pairs.find { |pair| pair[:port_of_loading] == r[:port_of_loading] && pair[:port_of_destination] == r[:port_of_destination] }
+      if port_pair
+        r[:weighted_average_ocean_cost] = port_pair[:weighted_average_ocean_cost]
+        r[:weighted_average_ocean_transit_time] = port_pair[:weighted_average_ocean_transit_time]
+      end
+      r
+    end
+  end
+
+  def calculate_weighted_average_ocean_freight_cost(same_ports_results)
+    # SUM of each same ports non expired (COST * FREQUENCY)/ SUM of each FREQUENCY for all same ports ocean_freight
+    sum_of_frequencies = same_ports_results.reduce(0) { |a, b| a + b[:frequency] }
+    unless sum_of_frequencies.zero?
+      sum_of_weighted_costs = same_ports_results.reduce(0) { |a, b| a + (b[:ocean_freight_cost] * b[:frequency]) }
+      return (sum_of_weighted_costs / sum_of_frequencies).round.to_i
+    end
+    sum_of_weighted_costs = same_ports_results.reduce(0) { |a, b| a + b[:ocean_freight_cost] }
+    return (sum_of_weighted_costs / same_ports_results.count).round.to_i
+  end
+
+  def calculate_weighted_average_ocean_freight_transit_time(same_ports_results)
+    # SUM of each non expired (TRANSIT_TIME * FREQUENCY)/ SUM of each FREQUENCY for all same ports ocean_freight
+    sum_of_frequencies = same_ports_results.reduce(0) { |a, b| a + b[:frequency] }
+    unless sum_of_frequencies.zero?
+      sum_of_weighted_costs = same_ports_results.reduce(0) { |a, b| a + (b[:ocean_freight_transit_time] * b[:frequency]) }
+      return (sum_of_weighted_costs / sum_of_frequencies).round.to_i
+    end
+    sum_of_weighted_costs = same_ports_results.reduce(0) { |a, b| a + b[:ocean_freight_transit_time] }
+    return (sum_of_weighted_costs / same_ports_results.count).round.to_i
+  end
 
   def fca_purchases(supplier:, place_of_loading:, place_of_delivery:, container_type: container_type_default)
     # initialize results
@@ -209,7 +266,7 @@ class SearchesController < ApplicationController
                                       all_ocean_shippings: all_ocean_shippings,
                                       container_type: container_type)
     ocean_shippings.map do |shipping|
-      hash = convert_to_hash(shipping)
+      hash = convert_object_to_hash(shipping)
       hash["expired"] = (Date.strptime(hash["expiry"], '%d/%m/%y') + 1) < Date.today
       hash
     end
@@ -220,12 +277,12 @@ class SearchesController < ApplicationController
     truck_shippings = TruckShipping.load.select do |shipping|
       shipping.place_of_loading == place_of_loading && shipping.place_of_delivery == place_of_delivery
     end
-    truck_shippings.map { |shipping| convert_to_hash(shipping) }
+    truck_shippings.map { |shipping| convert_object_to_hash(shipping) }
   end
 
-  def convert_to_hash(shipping)
+  def convert_object_to_hash(my_object)
     hash = {}
-    shipping.instance_variables.each { |var| hash[var.to_s.delete("@")] = shipping.instance_variable_get(var) }
+    my_object.instance_variables.each { |var| hash[var.to_s.delete("@")] = object.instance_variable_get(var) }
     hash
   end
 
@@ -321,6 +378,7 @@ class SearchesController < ApplicationController
       forwarder: port_shipping.forwarder,
       port_of_loading: port_shipping.port_of_loading,
       ocean_freight_cost: ocean_shipping.cost,
+      ocean_freight_transit_time: ocean_shipping.transit_time,
       # port_of_loading_ocean: ocean_shipping.port_of_loading,
       carrier: ocean_shipping.carrier,
       country_of_origin: ocean_shipping.country_of_origin,
@@ -328,6 +386,7 @@ class SearchesController < ApplicationController
       container_type: ocean_shipping.container_type,
       expiry: ocean_shipping.expiry,
       expired: (Date.strptime(ocean_shipping.expiry, '%d/%m/%y') + 1) < Date.today,
+      frequency: ocean_shipping.frequency,
       free_days: ocean_shipping.free_days,
       port_of_destination: ocean_shipping.port_of_destination,
       drayage_cost: after_ocean_shipping[:drayage_cost],
@@ -350,12 +409,14 @@ class SearchesController < ApplicationController
                forwarder: port_shipping.forwarder,
                port_of_loading: port_shipping.port_of_loading,
                ocean_freight_cost: ocean_shipping.cost,
+               ocean_freight_transit_time: ocean_shipping.transit_time,
                carrier: ocean_shipping.carrier,
                country_of_origin: ocean_shipping.country_of_origin,
                country_of_destination: ocean_shipping.country_of_origin,
                container_type: ocean_shipping.container_type,
                expiry: ocean_shipping.expiry,
                expired: (Date.strptime(ocean_shipping.expiry, '%d/%m/%y') + 1) < Date.today,
+               frequency: ocean_shipping.frequency,
                free_days: ocean_shipping.free_days,
                port_of_destination: ocean_shipping.port_of_destination,
                notes: merged_notes(ocean_shipping, port_shipping)
