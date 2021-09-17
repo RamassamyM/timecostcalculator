@@ -21,7 +21,11 @@
       <% else %>
         <div class="btn-group btn-group-toggle" data-toggle="buttons">
           <label class="btn btn-outline-secondary active">
-            <input type="radio" name="resultDisplayOption" id="topResultDisplay" checked> Cheapest Rate
+            <% if ['fca_purchase', 'fob_purchase', 'export_purchase', 'crosstrade_purchase'].include?(@purchase_type) %>
+              <input type="radio" name="resultDisplayOption" id="topResultDisplay" checked> Average Rate
+            <% else %>
+              <input type="radio" name="resultDisplayOption" id="topResultDisplay" checked> Cheapest Rate
+            <% end %>
           </label>
           <label class="btn btn-outline-secondary">
             <input type="radio" name="resultDisplayOption" id="allResultsDisplay"> All Results
